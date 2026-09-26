@@ -1,0 +1,10 @@
+{
+  "buildCommand": "pnpm build",
+  "framework": "nextjs",
+  "regions": ["bom1"],
+  "functions": {
+    "app/api/demo/route.ts": {
+      "maxDuration": 10
+    }
+  }
+}
