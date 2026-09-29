@@ -22,9 +22,9 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 })
 
-const TITLE = "Clinax — The Clinical Operating System for Growing Clinics"
+const TITLE = "Clinax — The Clinical Operating System for Physiotherapy & Rehabilitation Clinics"
 const DESCRIPTION =
-  "Run your physiotherapy or rehab clinic without WhatsApp chaos, spreadsheets and paper files. Clinax connects reception, therapists and leadership on one platform."
+  "Physiotherapy clinic management software for growing physiotherapy & rehabilitation clinics. Clinax replaces WhatsApp, spreadsheets and paper with one clinical operating system connecting reception, therapists, patients and leadership."
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
   openGraph: {
     title: TITLE,
-    description: "One connected platform for patient operations, clinical care and clinic operations. A TrueSpur product.",
+    description: "Built for growing physiotherapy & rehabilitation clinics. One connected operating system for reception, therapists, patients and leadership. Now onboarding early clinics.",
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,

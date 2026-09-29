@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { C } from "./theme"
+import { CTA } from "./content"
 import { PrimaryButton } from "./ui"
 
 // Appears once the hero has scrolled out and hides again near the demo form,
@@ -35,9 +36,9 @@ export default function StickyCTA() {
         style={{ background: "rgba(255,255,255,0.92)", border: `1px solid ${C.lavender}` }}
       >
         <p className="hidden sm:block text-[13px] font-semibold" style={{ color: C.ink }}>
-          See Clinax with your clinic&apos;s workflows.
+          {CTA.status} — see Clinax with your workflows.
         </p>
-        <PrimaryButton href="#demo">Request a Demo</PrimaryButton>
+        <PrimaryButton href="#demo">{CTA.primary}</PrimaryButton>
       </div>
     </div>
   )

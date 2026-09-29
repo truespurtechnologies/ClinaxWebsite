@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
+import Link from "next/link"
 import { C, GRADIENT, HEADING } from "./theme"
 import { ArrowIcon } from "./ui"
 
@@ -93,7 +94,7 @@ export default function DemoForm() {
           Request received.
         </h3>
         <p className="mt-3 text-[15px] leading-[1.65]" style={{ color: C.muted }}>
-          We&apos;ll be in touch promptly to schedule your walkthrough. A confirmation has been sent to your email.
+          We&apos;ll be in touch promptly to arrange your walkthrough. A confirmation has been sent to your email.
         </p>
         <button type="button" onClick={() => setStatus("idle")} className="mt-6 text-[14px] font-semibold cursor-pointer hover:underline underline-offset-4" style={{ color: C.violet }}>
           Send another request
@@ -106,10 +107,10 @@ export default function DemoForm() {
     <form onSubmit={onSubmit} noValidate className="rounded-3xl p-6 sm:p-8 flex flex-col gap-5" style={{ background: C.white, border: `1px solid ${C.lavender}` }}>
       <div>
         <h3 className="text-[1.5rem] font-bold" style={{ ...HEADING, color: C.ink }}>
-          Get your demo
+          Request early access
         </h3>
         <p className="mt-1 text-[14px]" style={{ color: C.muted }}>
-          Tell us a little about your clinic. We&apos;ll tailor the walkthrough.
+          Tell us a little about your clinic. We&apos;ll get back to you to arrange a walkthrough.
         </p>
       </div>
 
@@ -156,7 +157,7 @@ export default function DemoForm() {
         className="group inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-4 text-[15px] font-semibold text-white cursor-pointer disabled:opacity-70 disabled:cursor-wait transition-transform duration-200 hover:-translate-y-0.5 shadow-[0_14px_34px_-12px_rgba(91,15,193,0.7)]"
         style={{ background: GRADIENT }}
       >
-        {status === "submitting" ? "Sending…" : "Request my demo"}
+        {status === "submitting" ? "Sending…" : "Request early access"}
         {status !== "submitting" && (
           <span className="transition-transform duration-200 group-hover:translate-x-0.5">
             <ArrowIcon />
@@ -165,7 +166,11 @@ export default function DemoForm() {
       </button>
 
       <p className="text-[12px] text-center" style={{ color: C.muted }}>
-        Your information is only used to arrange your demo and is never shared.
+        Your information is only used to respond to your request and is never shared. See our{" "}
+        <Link href="/privacy" className="underline underline-offset-2" style={{ color: C.violet }}>
+          Privacy Policy
+        </Link>
+        .
       </p>
     </form>
   )

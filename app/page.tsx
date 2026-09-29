@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav"
 import Hero from "@/components/Hero"
+import Audience from "@/components/Audience"
 import PainPoints from "@/components/PainPoints"
 import BeforeAfter from "@/components/BeforeAfter"
 import Platform from "@/components/Platform"
@@ -8,6 +9,7 @@ import PatientJourney from "@/components/PatientJourney"
 import RoleCards from "@/components/RoleCards"
 import Steps from "@/components/Steps"
 import WhyClinax from "@/components/WhyClinax"
+import Intelligence from "@/components/Intelligence"
 import TrustStrip from "@/components/TrustStrip"
 import FAQ from "@/components/FAQ"
 import FinalCTA from "@/components/FinalCTA"
@@ -20,6 +22,7 @@ export default function ClinaxPage() {
       <Nav />
       <main className="overflow-x-clip">
         <Hero />
+        <Audience />
         <PainPoints />
         <BeforeAfter />
         <Platform />
@@ -28,6 +31,7 @@ export default function ClinaxPage() {
         <RoleCards />
         <Steps />
         <WhyClinax />
+        <Intelligence />
         <TrustStrip />
         <FAQ />
         <FinalCTA />

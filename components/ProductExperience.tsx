@@ -3,7 +3,7 @@
 import { useRef, useState, type KeyboardEvent } from "react"
 import Image from "next/image"
 import { C, GRADIENT, HEADING } from "./theme"
-import { FEATURE_TABS } from "./content"
+import { CTA, FEATURE_TABS } from "./content"
 import { SectionHeading, PrimaryButton, GhostButton } from "./ui"
 
 // ─── Tabbed feature explorer — the primary product proof ────────────────────
@@ -182,8 +182,8 @@ export default function ProductExperience() {
         </div>
 
         <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3.5">
-          <PrimaryButton href="#demo" size="lg">Request a Demo</PrimaryButton>
-          <GhostButton href="#demo" dark>See how it fits your workflows</GhostButton>
+          <PrimaryButton href="#demo" size="lg">{CTA.primary}</PrimaryButton>
+          <GhostButton href="#demo" dark>{CTA.secondary}</GhostButton>
         </div>
       </div>
 

@@ -24,9 +24,11 @@ route. The pre-split state of that repo is preserved under the git tag `clinax-p
 app/
   layout.tsx        root layout: fonts (Caladea + Plus Jakarta Sans), metadata, analytics
   page.tsx          the single landing page, composed from components/
+  privacy/, terms/  legal pages rendered via components/LegalPage.tsx
   api/demo/route.ts POST handler for the demo-request form (SMTP, rate-limited)
   robots.ts, sitemap.ts, not-found.tsx
-components/         one file per section + content.ts (all copy), theme.ts, motion.ts, ui.tsx
+components/         one file per section + content.ts (all copy), legal.ts (legal copy),
+                    theme.ts, motion.ts, ui.tsx
 lib/site.ts         SITE_URL, TRUESPUR_URL, CONTACT_EMAIL
 lib/rate-limit.ts   in-memory rate limiter used by the API route
 public/images/      blurred product screenshots referenced from content.ts
@@ -51,4 +53,5 @@ for `/api/demo` to send mail; the route returns 500 with a clear log line if any
 ## Editing copy
 
 All text, nav links, FAQ items, feature tabs and screenshot references live in `components/content.ts`.
+Legal page copy (Privacy Policy, Terms of Service — draft pending legal review) lives in `components/legal.ts`.
 Colours and heading font are in `components/theme.ts`.

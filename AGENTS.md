@@ -3,8 +3,10 @@
 ## Project
 
 Standalone Clinax marketing site (www.clinax.in). Next.js 15 App Router, React 19, Tailwind v4, pnpm, Vercel.
-Single landing page composed from `components/`; all copy in `components/content.ts`, tokens in `components/theme.ts`.
-See README.md for layout and env vars.
+Single landing page composed from `components/`, plus `/privacy` and `/terms` legal pages rendered by
+`components/LegalPage.tsx` with copy in `components/legal.ts` (draft pending legal review — no compliance
+certification claims). All landing copy in `components/content.ts` (CTA wording comes from the `CTA` const);
+tokens in `components/theme.ts`. See README.md for layout and env vars.
 
 ## Commands
 

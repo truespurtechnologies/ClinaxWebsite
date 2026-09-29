@@ -10,13 +10,23 @@ export const NAV_LINKS = [
   { label: "FAQ", href: "#faq" },
 ]
 
+// CTA wording used across nav, hero, product section, sticky bar and final
+// CTA. Clinax is live and onboarding its first clinics — the primary action
+// is requesting early access, with booking a demo as the secondary path.
+export const CTA = {
+  primary: "Request Early Access",
+  secondary: "Book a Demo",
+  status: "Now onboarding early clinics",
+}
+
 export const HERO = {
   eyebrow: "The Clinical Operating System",
+  icp: "Built for growing physiotherapy & rehabilitation clinics.",
   headline: "Run your clinic without WhatsApp chaos, spreadsheets and paper files.",
-  sub: "Clinax connects reception, therapists and leadership on one platform — so patient records, appointments, clinical notes and branch performance stay connected.",
-  primaryCta: "Request a Demo",
+  sub: "Clinax connects reception, therapists, patients and leadership on one operating system — so appointments, treatment plans, clinical documentation and branch performance stay connected as you grow.",
+  primaryCta: CTA.primary,
   secondaryCta: "See the platform",
-  trust: ["Built for physiotherapy & rehab clinics", "Single branch to multi-branch", "Role-based for reception, therapists & leadership", "Now onboarding early clinics"],
+  trust: ["One connected journey — appointment to recovery", "Single branch to multi-branch", "Role-based for reception, therapists & leadership"],
 }
 
 export const CAPABILITIES = [
@@ -179,6 +189,35 @@ export const JOURNEY_STEPS = [
 
 export const JOURNEY_QUOTE = "Capture information once. Carry it through the patient's journey."
 
+// "Who Clinax is for" — makes the ICP explicit early in the page. The beachhead
+// stays physiotherapy & rehabilitation; "growing" practices with increasing
+// operational complexity are the deepest fit, without excluding single-branch
+// clinics.
+export const AUDIENCE = [
+  { title: "Growing Physiotherapy Practices", text: "Clinics moving beyond spreadsheets, WhatsApp and paper as they grow." },
+  { title: "Multi-Therapist Clinics", text: "Practices where scheduling, therapist capacity, patient handoffs and daily coordination are becoming difficult." },
+  { title: "Multi-Branch Practices", text: "Owners and managers who need visibility across branches, teams, patients and operations." },
+  { title: "Rehabilitation Centres", text: "Organisations managing structured treatment journeys across therapists and rehabilitation services." },
+]
+
+export const AUDIENCE_SUPPORT = "Starting with physiotherapy and rehabilitation. Designed to expand across allied health."
+
+// Product direction — AI-assisted capabilities. Every item is upcoming; none
+// are presented as live. The narrative is workflow → structured data →
+// intelligence → AI, not "AI-powered clinic software".
+export const INTELLIGENCE = {
+  eyebrow: "Designed to evolve with AI",
+  title: "Intelligence built into the workflow.",
+  sub: "Clinax first understands how a rehabilitation clinic actually runs — one connected workflow, one structured record. AI-assisted capabilities are introduced on that foundation, to reduce the administrative work around clinical care.",
+  items: [
+    { title: "AI-assisted clinical documentation", text: "Session notes drafted from the structured visit, reviewed by the therapist." },
+    { title: "Voice-to-note", text: "Speak assessments and treatment notes; Clinax structures them into the record." },
+    { title: "Follow-up assistance", text: "Follow-ups and nudges suggested from visit outcomes and care plans." },
+    { title: "Operational insights", text: "Signals across utilisation, follow-ups and branch performance." },
+  ],
+  note: "The connected patient record these build on is live today. Each capability is introduced clinic by clinic, as it is ready.",
+}
+
 export const ROLES = [
   {
     title: "Reception & Front Desk",
@@ -246,7 +285,7 @@ export const FAQS = [
   },
   {
     q: "How long does onboarding take?",
-    a: "It depends on branches and scope, but the approach is the same: discover and align, configure, onboard by role, go live with support. Most clinics start on the front desk and scheduling within weeks, not months.",
+    a: "It depends on branches and scope, but the approach is the same: discover and align, configure, onboard by role, go live with support. The goal is to have your front desk and scheduling live within weeks, not months.",
   },
   {
     q: "Can Clinax adapt to our clinic's workflows?",
@@ -274,13 +313,14 @@ export const FAQS = [
   },
   {
     q: "How do we get started?",
-    a: "Request a demo. We walk through Clinax with your workflows in mind, then agree an initial scope and implementation plan with you.",
+    a: "Request early access. We walk through Clinax with your workflows in mind, then agree an initial scope and implementation plan with you.",
   },
 ]
 
 export const FINAL_CTA = {
+  eyebrow: "Now onboarding early clinics",
   headline: "Stop running your clinic from group chats.",
-  sub: "See how Clinax brings patients, therapists and branches together — in a demo built around your clinic.",
+  sub: "Clinax is live and onboarding its first clinics. Tell us about yours — we'll walk you through the platform with your workflows in mind.",
   bullets: ["Personalised walkthrough with your workflows", "No commitment, no credit card", "We'll get back to you promptly"],
 }
 
@@ -288,4 +328,9 @@ export const FOOTER_LINKS = [
   { label: "TrueSpur", href: TRUESPUR_URL },
   { label: "Products", href: `${TRUESPUR_URL}/products` },
   { label: "Contact", href: `${TRUESPUR_URL}/contact` },
+]
+
+export const LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
 ]

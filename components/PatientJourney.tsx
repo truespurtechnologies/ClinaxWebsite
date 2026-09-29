@@ -16,9 +16,9 @@ export default function PatientJourney() {
     <section className="py-24 sm:py-28" style={{ background: C.surface }}>
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <SectionHeading
-          eyebrow="The connected journey"
-          title="One patient journey. Connected from appointment to follow-up."
-          sub="Every step below shares the same record — nobody re-types what already happened."
+          eyebrow="From appointment to recovery"
+          title="One connected workflow. One operating view."
+          sub="Patient, treatment plan, therapist, session, progress and outcome share the same record — nobody re-types anything, and leadership sees the whole operation."
         />
 
         {/* Desktop / tablet: single connected track */}

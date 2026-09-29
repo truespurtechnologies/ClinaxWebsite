@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { C, HEADING } from "./theme"
-import { CAPABILITIES, HERO } from "./content"
+import { CAPABILITIES, CTA, HERO } from "./content"
 import { PrimaryButton, GhostButton, Eyebrow } from "./ui"
 
 function CheckDot() {
@@ -99,14 +99,26 @@ export default function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8 pt-16 pb-20 sm:pt-24">
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
-          <Eyebrow dark>{HERO.eyebrow}</Eyebrow>
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
+            <Eyebrow dark>{HERO.eyebrow}</Eyebrow>
+            <span
+              className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] uppercase"
+              style={{ background: "rgba(196,24,147,0.18)", color: C.lavenderTint, border: "1px solid rgba(196,24,147,0.4)" }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.magenta }} aria-hidden="true" />
+              {CTA.status}
+            </span>
+          </div>
           <h1
             className="mt-7 text-[2.5rem] sm:text-[3.4rem] lg:text-[4.1rem] leading-[1.03] font-bold tracking-[-0.015em] text-white"
             style={HEADING}
           >
             {HERO.headline}
           </h1>
-          <p className="mt-7 text-[1.05rem] sm:text-[1.2rem] leading-[1.65] max-w-2xl" style={{ color: C.lilac }}>
+          <p className="mt-7 text-[1.1rem] sm:text-[1.25rem] font-semibold text-white">
+            {HERO.icp}
+          </p>
+          <p className="mt-3 text-[1.05rem] sm:text-[1.15rem] leading-[1.65] max-w-2xl" style={{ color: C.lilac }}>
             {HERO.sub}
           </p>
 

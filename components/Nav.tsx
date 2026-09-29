@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { C, GRADIENT } from "./theme"
-import { NAV_LINKS } from "./content"
+import { CTA, NAV_LINKS } from "./content"
 import { scrollToId } from "./motion"
 import { PrimaryButton } from "./ui"
 
@@ -79,7 +79,7 @@ export default function Nav() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <PrimaryButton href="#demo">Request a Demo</PrimaryButton>
+          <PrimaryButton href="#demo">{CTA.primary}</PrimaryButton>
         </div>
 
         <button
@@ -118,7 +118,7 @@ export default function Nav() {
           ))}
           <div className="pt-3">
             <PrimaryButton href="#demo" onClick={() => go("#demo")} className="w-full justify-center">
-              Request a Demo
+              {CTA.primary}
             </PrimaryButton>
           </div>
         </nav>

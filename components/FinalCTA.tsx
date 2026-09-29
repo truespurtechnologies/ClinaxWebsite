@@ -17,7 +17,7 @@ export default function FinalCTA() {
       />
       <div ref={ref} className="relative max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         <div className="lg:col-span-6 min-w-0" style={riseStyle(inView, 0)}>
-          <Eyebrow dark>Get started</Eyebrow>
+          <Eyebrow dark>{FINAL_CTA.eyebrow}</Eyebrow>
           <h2 className="mt-6 text-[2.2rem] sm:text-[3rem] lg:text-[3.4rem] leading-[1.05] font-bold text-white tracking-[-0.01em]" style={HEADING}>
             {FINAL_CTA.headline}
           </h2>
@@ -38,7 +38,7 @@ export default function FinalCTA() {
           </ul>
           <p className="mt-10 text-[13px]" style={{ color: C.lilac }}>
             Prefer email?{" "}
-            <a href={`mailto:${CONTACT_EMAIL}?subject=Clinax Demo Request`} className="font-semibold underline underline-offset-4 text-white">
+            <a href={`mailto:${CONTACT_EMAIL}?subject=Clinax Early Access Request`} className="font-semibold underline underline-offset-4 text-white">
               {CONTACT_EMAIL}
             </a>
           </p>

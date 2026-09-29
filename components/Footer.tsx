@@ -1,5 +1,6 @@
+import Link from "next/link"
 import { C } from "./theme"
-import { FOOTER_LINKS } from "./content"
+import { FOOTER_LINKS, LEGAL_LINKS } from "./content"
 import { ClinaxMark } from "./Nav"
 import { CONTACT_EMAIL } from "@/lib/site"
 
@@ -12,12 +13,12 @@ export default function Footer() {
           <div>
             <p className="text-white font-extrabold text-[16px] leading-none">Clinax</p>
             <p className="text-[11px] mt-1" style={{ color: C.lilac }}>
-              The Clinical Operating System · a TrueSpur product
+              The Clinical Operating System · A TrueSpur Product
             </p>
           </div>
         </div>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
           {FOOTER_LINKS.map((l) => (
             <a
               key={l.href}
@@ -29,6 +30,16 @@ export default function Footer() {
             >
               {l.label}
             </a>
+          ))}
+          {LEGAL_LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="text-[13px] font-medium transition-opacity hover:opacity-70"
+              style={{ color: C.lavenderTint }}
+            >
+              {l.label}
+            </Link>
           ))}
           <a href={`mailto:${CONTACT_EMAIL}`} className="text-[13px] font-medium transition-opacity hover:opacity-70" style={{ color: C.lavenderTint }}>
             {CONTACT_EMAIL}

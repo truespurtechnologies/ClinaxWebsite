@@ -3,7 +3,7 @@
 import { useState } from "react"
 import * as Accordion from "@radix-ui/react-accordion"
 import { C, HEADING } from "./theme"
-import { FAQS } from "./content"
+import { CTA, FAQS } from "./content"
 import { SectionHeading, GhostButton } from "./ui"
 import { scrollToId } from "./motion"
 
@@ -72,7 +72,7 @@ export default function FAQ() {
             Book a demo and we&apos;ll answer everything with your clinic in mind.
           </p>
           <div className="mt-6">
-            <GhostButton onClick={() => scrollToId("#demo")}>Request a Demo →</GhostButton>
+            <GhostButton onClick={() => scrollToId("#demo")}>{CTA.secondary} →</GhostButton>
           </div>
         </div>
       </div>
