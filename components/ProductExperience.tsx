@@ -5,6 +5,7 @@ import Image from "next/image"
 import { C, GRADIENT, HEADING } from "./theme"
 import { CTA, FEATURE_TABS } from "./content"
 import { SectionHeading, PrimaryButton, GhostButton } from "./ui"
+import ClinicalShowcase from "./ClinicalShowcase"
 
 // ─── Tabbed feature explorer — the primary product proof ────────────────────
 
@@ -23,7 +24,7 @@ export default function ProductExperience() {
   const subStepsWithScreens = current.subSteps?.filter((s) => s.src) ?? []
   const activeSubStep = current.subSteps?.[sub]
   const screen = activeSubStep?.src
-    ? { src: activeSubStep.src, alt: activeSubStep.alt ?? current.screen.alt, width: activeSubStep.width ?? current.screen.width, height: activeSubStep.height ?? current.screen.height }
+    ? { src: activeSubStep.src, alt: activeSubStep.alt ?? current.screen?.alt ?? "", width: activeSubStep.width ?? current.screen?.width ?? 1200, height: activeSubStep.height ?? current.screen?.height ?? 630 }
     : current.screen
 
   const firstScreenSub = (i: number) => Math.max(FEATURE_TABS[i].subSteps?.findIndex((s) => s.src) ?? 0, 0)
@@ -43,8 +44,12 @@ export default function ProductExperience() {
     else if (e.key === "End") { e.preventDefault(); goTo(FEATURE_TABS.length - 1) }
   }
 
+  // A sub-step is interactive when it has a screenshot or the tab renders a
+  // coded showcase (Clinical Care), where every step is a rendered state.
+  const selectable = (i: number) => Boolean(current.subSteps?.[i]?.src) || Boolean(current.showcase)
+
   const selectSub = (i: number) => {
-    if (!current.subSteps?.[i]?.src) return
+    if (!selectable(i)) return
     setUserPaused(true)
     setSub(i)
   }
@@ -69,7 +74,7 @@ export default function ProductExperience() {
     if (!autoAdvance) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     if (window.matchMedia("(pointer: coarse)").matches) return
-    const nextScreenSub = current.subSteps?.findIndex((s, i) => i > sub && s.src) ?? -1
+    const nextScreenSub = current.subSteps?.findIndex((s, i) => i > sub && (s.src || current.showcase)) ?? -1
     if (nextScreenSub < 0) return
     const id = setTimeout(() => setSub(nextScreenSub), SUB_STEP_MS)
     return () => clearTimeout(id)
@@ -139,7 +144,7 @@ export default function ProductExperience() {
             </div>
             <div className="flex gap-1.5 sm:gap-2.5">
               {current.subSteps.map((s, i) => {
-                const hasScreen = Boolean(s.src)
+                const hasScreen = selectable(i)
                 const selected = hasScreen && i === sub
                 const passed = hasScreen && i < sub
                 return (
@@ -251,15 +256,19 @@ export default function ProductExperience() {
                 </span>
               </div>
               <div>
-                <Image
-                  key={screen.src}
-                  src={screen.src}
-                  alt={screen.alt}
-                  width={screen.width}
-                  height={screen.height}
-                  sizes="(min-width: 1024px) 60vw, 92vw"
-                  className="w-full h-auto block cx2-fade-in"
-                />
+                {current.showcase === "clinical-session" ? (
+                  <ClinicalShowcase steps={current.subSteps ?? []} active={sub} />
+                ) : screen ? (
+                  <Image
+                    key={screen.src}
+                    src={screen.src}
+                    alt={screen.alt}
+                    width={screen.width}
+                    height={screen.height}
+                    sizes="(min-width: 1024px) 60vw, 92vw"
+                    className="w-full h-auto block cx2-fade-in"
+                  />
+                ) : null}
               </div>
               <div className="px-4 py-2 border-t" style={{ background: C.surface, borderColor: C.lavender }}>
                 <p className="text-[10.5px] font-medium tracking-wide" style={{ color: C.muted }}>

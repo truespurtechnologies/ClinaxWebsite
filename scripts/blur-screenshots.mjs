@@ -63,11 +63,9 @@ const JOBS = [
       { x: 1202, y: 62, w: 290, h: 36, color: "#FFFFFF" }, // branch tabs All/Velachery/Nungambakkam/OMR
     ],
   },
-  // Visit screens have no Physiora-specific text — copy through unchanged.
-  { src: "Visit 2.png", out: "visit-assess.png", regions: [] },
-  { src: "Visit 3.png", out: "visit-treat.png", regions: [] },
-  { src: "Visit 4.png", out: "visit-plan.png", regions: [] },
-  { src: "Visit 5.png", out: "visit-complete.png", regions: [] },
+  // Clinical-care visit steps are no longer screenshots: the Clinical Care
+  // tab renders a coded marketing mockup (components/ClinicalShowcase.tsx),
+  // so the raw Visit N.png sources stay in assets/raw/ only.
 ]
 
 async function sampleColor(image, meta, x, y) {

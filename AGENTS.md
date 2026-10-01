@@ -27,6 +27,10 @@ for the same form. Keep button labels Title Case, form/heading copy sentence cas
 - `assets/raw/` holds Physiora-branded source screenshots. Never move them into `public/`. Regenerate the
   redacted `public/images/*.png` with `scripts/blur-screenshots.mjs` (needs `sharp` installed ad hoc) —
   it flat-fills Physiora-specific regions rather than blurring them.
+- The Clinical Care tab in `ProductExperience` renders `components/ClinicalShowcase.tsx` — a deliberately
+  simplified coded mockup (marketing showcase, not real app screens). Keep it that way: no raw visit
+  screenshots for the six-step workflow; fictional demo data only, no field-level schema, IDs or internal
+  mechanics. `raw/Visit N.png` sources stay unexported.
 - `assets/Logo/` holds brand source files; `assets/Logo/svg/` holds the SVG masters (vectorised from the
   approved raster by `scripts/trace_logo.py`, needs `pip install vtracer pillow`). Derivatives
   (`public/logo/*.svg|png|webp`, `app/icon.png`, `app/apple-icon.png`) come from `scripts/build-logo.mjs`

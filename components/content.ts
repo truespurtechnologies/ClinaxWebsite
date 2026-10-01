@@ -133,7 +133,11 @@ export interface FeatureTab {
   headline: string
   description: string
   bullets: string[]
-  screen: { src: string; width: number; height: number; alt: string }
+  screen?: { src: string; width: number; height: number; alt: string }
+  // Coded product visualisation instead of a screenshot — the Clinical Care
+  // tab renders components/ClinicalShowcase.tsx, a deliberately simplified
+  // session UI rather than raw application screens.
+  showcase?: "clinical-session"
   subSteps?: { key: string; label: string; src?: string; width?: number; height?: number; alt?: string }[]
 }
 
@@ -172,14 +176,14 @@ export const FEATURE_TABS: FeatureTab[] = [
     headline: "Move through the session without losing the thread.",
     description: "A structured six-step clinical workflow — review, assess, treat, document, plan and complete — that keeps documentation consistent across every therapist and every session.",
     bullets: ["Subjective and objective assessment notes", "Today's treatment log", "Goals, progress and home exercise plan", "Visit summary and next appointment"],
-    screen: { src: "/images/visit-assess.png", width: 1235, height: 650, alt: "Clinax therapy session workflow showing the assessment step" },
+    showcase: "clinical-session",
     subSteps: [
-      { key: "review", label: "Review", src: "/images/visit-review.png", width: 1312, height: 635, alt: "Clinax therapy session — review step with patient history and previous visit context" },
-      { key: "assess", label: "Assess", src: "/images/visit-assess.png", width: 1235, height: 650, alt: "Clinax therapy session — assessment step with subjective and objective notes" },
-      { key: "treat", label: "Treat", src: "/images/visit-treat.png", width: 1227, height: 672, alt: "Clinax therapy session — treatment step with today's treatment log" },
-      { key: "document", label: "Document", src: "/images/visit-document.png", width: 1310, height: 640, alt: "Clinax therapy session — documentation step with session notes" },
-      { key: "plan", label: "Plan", src: "/images/visit-plan.png", width: 1227, height: 672, alt: "Clinax therapy session — care-plan step with goals and home exercise plan" },
-      { key: "complete", label: "Complete", src: "/images/visit-complete.png", width: 1232, height: 652, alt: "Clinax therapy session — completion step with summary and next appointment" },
+      { key: "review", label: "Review" },
+      { key: "assess", label: "Assess" },
+      { key: "treat", label: "Treat" },
+      { key: "document", label: "Document" },
+      { key: "plan", label: "Plan" },
+      { key: "complete", label: "Complete" },
     ],
   },
   {

@@ -88,7 +88,6 @@ export default function BeforeAfter() {
                     ...riseStyle(inView, 0.15 + i * 0.08),
                     background: C.surface,
                     border: `1px dashed ${C.lavender}`,
-                    transform: `${inView ? "translate(0,0)" : "translate(0,14px)"} rotate(${i % 2 === 0 ? -1.1 : 1.1}deg)`,
                   }}
                 >
                   <span className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: C.peach, color: C.brown }}>
