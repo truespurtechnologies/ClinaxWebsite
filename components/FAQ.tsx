@@ -4,7 +4,7 @@ import { useState } from "react"
 import * as Accordion from "@radix-ui/react-accordion"
 import { C, HEADING } from "./theme"
 import { CTA, FAQS } from "./content"
-import { SectionHeading, GhostButton } from "./ui"
+import { SectionHeading, GhostButton, ArrowIcon } from "./ui"
 import { scrollToId } from "./motion"
 
 const INITIAL = 5
@@ -72,7 +72,12 @@ export default function FAQ() {
             Book a demo and we&apos;ll answer everything with your clinic in mind.
           </p>
           <div className="mt-6">
-            <GhostButton onClick={() => scrollToId("#demo")}>{CTA.secondary} →</GhostButton>
+            <GhostButton onClick={() => scrollToId("#demo")} className="group">
+              {CTA.primary}
+              <span className="transition-transform duration-200 group-hover:translate-x-0.5">
+                <ArrowIcon />
+              </span>
+            </GhostButton>
           </div>
         </div>
       </div>

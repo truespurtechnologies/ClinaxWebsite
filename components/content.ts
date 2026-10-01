@@ -1,32 +1,30 @@
 // All copy and structured data for the Clinax page lives here so it can be
 // edited without touching component markup.
 
-import { TRUESPUR_URL } from "@/lib/site"
-
 export const NAV_LINKS = [
   { label: "Platform", href: "#platform" },
-  { label: "Product", href: "#product" },
+  { label: "Product Tour", href: "#product" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "FAQ", href: "#faq" },
 ]
 
 // CTA wording used across nav, hero, product section, sticky bar and final
-// CTA. Clinax is live and onboarding its first clinics — the primary action
-// is requesting early access, with booking a demo as the secondary path.
+// CTA. Clinax is live and onboarding its first clinics — every path leads to
+// one action, booking a demo. Secondary buttons point at the product proof
+// (#product), never at a second route to the same form.
 export const CTA = {
-  primary: "Request Early Access",
-  secondary: "Book a Demo",
+  primary: "Book a Demo",
+  secondary: "See It in Action",
   status: "Now onboarding early clinics",
 }
 
 export const HERO = {
-  eyebrow: "The Clinical Operating System",
-  icp: "Built for growing physiotherapy & rehabilitation clinics.",
+  eyebrow: CTA.status,
   headline: "Run your clinic without WhatsApp chaos, spreadsheets and paper files.",
-  sub: "Clinax connects reception, therapists, patients and leadership on one operating system — so appointments, treatment plans, clinical documentation and branch performance stay connected as you grow.",
+  sub: "The clinical operating system for growing physiotherapy & rehabilitation clinics — reception, therapists and leadership working from one connected record.",
   primaryCta: CTA.primary,
-  secondaryCta: "See the platform",
-  trust: ["One connected journey — appointment to recovery", "Single branch to multi-branch", "Role-based for reception, therapists & leadership"],
+  secondaryCta: CTA.secondary,
+  trust: ["Appointment to recovery, one record", "Single branch to multi-branch", "Role-based for every team"],
 }
 
 export const CAPABILITIES = [
@@ -67,14 +65,20 @@ export const BEFORE_ITEMS = [
 
 export const BEFORE_FOOT = "Disconnected information creates more admin, missed context and harder handoffs."
 
+// The connected patient journey — shown inside the "With Clinax" card in
+// BeforeAfter. Proves the "one record" idea in place of a separate section.
 export const AFTER_PIPELINE = [
-  { verb: "Book", text: "Appointment & intake" },
-  { verb: "Treat", text: "Visits & care plans" },
-  { verb: "Track", text: "Progress & follow-up" },
-  { verb: "Grow", text: "Insights across branches" },
+  { label: "Appointment", carries: "Booking details" },
+  { label: "Check-in", carries: "Patient identity & visit reason" },
+  { label: "Clinical Context", carries: "History & last visit" },
+  { label: "Therapy", carries: "Assessment & treatment" },
+  { label: "Documentation", carries: "Session notes" },
+  { label: "Care Plan", carries: "Goals & home exercises" },
+  { label: "Follow-up", carries: "Next steps" },
+  { label: "Management", carries: "Visibility across it all" },
 ]
 
-export const AFTER_FOOT = "Everyone works from a more complete picture of the patient journey."
+export const AFTER_FOOT = "Capture information once. Carry it through the patient's journey."
 
 // The four capability areas shown in the Platform section. Each is backed by
 // what the product screenshots actually demonstrate (front desk, schedule,
@@ -154,7 +158,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   },
   {
     key: "therapist",
-    label: "Therapist",
+    label: "Therapist Desk",
     role: "Therapists",
     headline: "Give therapists the context they need, when they need it.",
     description: "Previous progress, today's priorities and clinical history in the therapist's working day — at the point of care.",
@@ -188,22 +192,6 @@ export const FEATURE_TABS: FeatureTab[] = [
     screen: { src: "/images/management-dashboard.png", width: 1492, height: 682, alt: "Clinax management dashboard showing clinic operations and performance" },
   },
 ]
-
-// Connected patient journey — kept intentionally compact and text-led. See
-// SECTION 6 of the brief: this proves the "connected clinic" idea, it is not
-// a second product showcase.
-export const JOURNEY_STEPS = [
-  { label: "Appointment", carries: "Booking details" },
-  { label: "Check-in", carries: "Patient identity & visit reason" },
-  { label: "Clinical Context", carries: "History & last visit" },
-  { label: "Therapy", carries: "Assessment & treatment" },
-  { label: "Documentation", carries: "Session notes" },
-  { label: "Care Plan", carries: "Goals & home exercises" },
-  { label: "Follow-up", carries: "Next steps" },
-  { label: "Management", carries: "Visibility across it all" },
-]
-
-export const JOURNEY_QUOTE = "Capture information once. Carry it through the patient's journey."
 
 // "Who Clinax is for" — makes the ICP explicit early in the page. The beachhead
 // stays physiotherapy & rehabilitation; "growing" practices with increasing
@@ -244,15 +232,13 @@ export const STEPS = [
 export const STEPS_REASSURANCE = "You don't have to transform everything on day one. Clinax starts with your priority workflows and grows with you."
 
 // Product philosophy / differentiation — replaces the old competitor
-// comparison matrix. No claims about named or unnamed competitors.
+// comparison matrix. No claims about named or unnamed competitors. The
+// "connected patient journey" point now lives in BeforeAfter, so it isn't
+// repeated here.
 export const WHY_CLINAX = [
   {
     title: "Built around rehabilitation workflows",
     text: "Assessment, treatment, goals and progress are modelled the way a physiotherapy or rehab session actually runs — not a notes field bolted onto generic clinic software.",
-  },
-  {
-    title: "One connected patient journey",
-    text: "Appointment, check-in, clinical context, therapy, documentation, care plan and follow-up share the same record — not separate tools someone has to reconcile.",
   },
   {
     title: "Designed for every role",
@@ -311,23 +297,27 @@ export const FAQS = [
   },
   {
     q: "How do we get started?",
-    a: "Request early access. We walk through Clinax with your workflows in mind, then agree an initial scope and implementation plan with you.",
+    a: "Book a demo. We walk through Clinax with your workflows in mind, then agree an initial scope and implementation plan with you.",
   },
 ]
 
 export const FINAL_CTA = {
-  eyebrow: "Now onboarding early clinics",
+  eyebrow: CTA.status,
   headline: "Stop running your clinic from group chats.",
   sub: "Clinax is live and onboarding its first clinics. Tell us about yours — we'll walk you through the platform with your workflows in mind.",
-  bullets: ["Personalised walkthrough with your workflows", "No commitment, no credit card", "We'll get back to you promptly"],
-  // Unattributed positioning line, not a testimonial.
+  bullets: ["Walkthrough built around your workflows", "No commitment, no credit card", "We reply within one business day"],
+  // Unattributed positioning line, not a testimonial — rendered without
+  // quotation marks so it doesn't read as an attributed customer quote.
   quote: "From the front desk to the treatment room — everything in one place.",
 }
 
+// Absolute-from-root anchors so these also work from /privacy and /terms,
+// which render Footer but aren't the homepage.
 export const FOOTER_LINKS = [
-  { label: "TrueSpur", href: TRUESPUR_URL },
-  { label: "Products", href: `${TRUESPUR_URL}/products` },
-  { label: "Contact", href: `${TRUESPUR_URL}/contact` },
+  { label: "Platform", href: "/#platform" },
+  { label: "Product Tour", href: "/#product" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "FAQ", href: "/#faq" },
 ]
 
 export const LEGAL_LINKS = [

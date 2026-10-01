@@ -26,7 +26,7 @@ export default function Audience() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <SectionHeading
           eyebrow="Who Clinax is for"
-          title="Built for growing clinics."
+          title="For clinics where coordination is getting harder."
         />
 
         <div

@@ -5,7 +5,6 @@ import PainPoints from "@/components/PainPoints"
 import BeforeAfter from "@/components/BeforeAfter"
 import Platform from "@/components/Platform"
 import ProductExperience from "@/components/ProductExperience"
-import PatientJourney from "@/components/PatientJourney"
 import Steps from "@/components/Steps"
 import WhyClinax from "@/components/WhyClinax"
 import Intelligence from "@/components/Intelligence"
@@ -26,7 +25,6 @@ export default function ClinaxPage() {
         <BeforeAfter />
         <Platform />
         <ProductExperience />
-        <PatientJourney />
         <Steps />
         <WhyClinax />
         <Intelligence />

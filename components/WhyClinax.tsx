@@ -14,7 +14,7 @@ export default function WhyClinax() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <SectionHeading
           eyebrow="The Clinax approach"
-          title={<>Your clinic has outgrown the workaround. <em style={{ color: C.magenta }}>Now what?</em></>}
+          title={<>Why a clinical operating system <em style={{ color: C.magenta }}>— not another app.</em></>}
           sub="Not a chat app with a spreadsheet behind it. Not a generic billing system with a notes field. A clinical operating system."
         />
         <div ref={ref} className="max-w-5xl mx-auto">

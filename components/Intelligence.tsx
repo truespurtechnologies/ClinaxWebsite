@@ -6,8 +6,8 @@ import { useInView, riseStyle } from "./motion"
 import { Eyebrow } from "./ui"
 
 // Product-direction aside, not a feature block: one contained dark panel on a
-// white section, echoing the quote card in PatientJourney. Every capability is
-// explicitly labelled "Upcoming" — none are presented as live.
+// white section. Every capability is explicitly labelled "Upcoming" — none are
+// presented as live.
 export default function Intelligence() {
   const { ref, inView } = useInView(0.2)
   return (

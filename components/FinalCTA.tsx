@@ -36,15 +36,15 @@ export default function FinalCTA() {
               </li>
             ))}
           </ul>
-          <blockquote
+          <p
             className="mt-10 pl-5 border-l-2 text-[1.15rem] sm:text-[1.3rem] leading-snug font-bold text-white"
             style={{ ...HEADING, borderImage: `linear-gradient(180deg, ${C.violet}, ${C.magenta}) 1` }}
           >
-            &ldquo;{FINAL_CTA.quote}&rdquo;
-          </blockquote>
+            {FINAL_CTA.quote}
+          </p>
           <p className="mt-10 text-[13px]" style={{ color: C.lilac }}>
             Prefer email?{" "}
-            <a href={`mailto:${CONTACT_EMAIL}?subject=Clinax Early Access Request`} className="font-semibold underline underline-offset-4 text-white">
+            <a href={`mailto:${CONTACT_EMAIL}?subject=Clinax Demo Request`} className="font-semibold underline underline-offset-4 text-white">
               {CONTACT_EMAIL}
             </a>
           </p>

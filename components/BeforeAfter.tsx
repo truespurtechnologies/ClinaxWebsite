@@ -135,38 +135,36 @@ export default function BeforeAfter() {
                 </span>
               </div>
               <h3 className="mt-5 text-[1.6rem] sm:text-[1.9rem] leading-tight font-bold" style={HEADING}>
-                One connected clinical workflow.
+                One connected patient journey.
               </h3>
 
-              {/* Horizontal pipeline (sm and up) */}
-              <div className="mt-9 hidden sm:block relative">
-                <div className="absolute top-[21px] left-[11%] right-[11%] h-px" style={{ background: "rgba(255,255,255,0.16)" }} aria-hidden="true">
-                  <div
-                    className="h-full"
-                    style={{ background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`, width: inView ? "100%" : "0%", transition: "width 1.3s cubic-bezier(0.22,1,0.36,1) 0.45s" }}
-                  />
-                </div>
-                <div className="relative grid grid-cols-4">
-                  {AFTER_PIPELINE.map((step, i) => (
-                    <div key={step.verb} className="flex flex-col items-center text-center gap-3 px-1" style={riseStyle(inView, 0.3 + i * 0.12, 10)}>
-                      <span
-                        className="h-[42px] inline-flex items-center rounded-full px-4 text-[13.5px] font-bold text-white shadow-[0_10px_24px_-10px_rgba(196,24,147,0.9)]"
-                        style={{ background: GRADIENT, border: "1px solid rgba(255,255,255,0.22)" }}
-                      >
-                        {step.verb}
-                      </span>
-                      <span className="text-[11px] leading-snug" style={{ color: C.lilac }}>
-                        {step.text}
-                      </span>
+              {/* Numbered 2×4 journey grid (sm and up) — one connecting line per row */}
+              <div className="mt-9 hidden sm:grid grid-cols-4 gap-y-8">
+                {[0, 4].map((rowStart) => (
+                  <div key={rowStart} className="col-span-4 relative grid grid-cols-4">
+                    <div className="absolute top-[15px] left-[11%] right-[11%] h-px" style={{ background: "rgba(255,255,255,0.16)" }} aria-hidden="true">
+                      <div
+                        className="h-full"
+                        style={{ background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`, width: inView ? "100%" : "0%", transition: `width 1.1s cubic-bezier(0.22,1,0.36,1) ${0.45 + rowStart * 0.05}s` }}
+                      />
                     </div>
-                  ))}
-                </div>
+                    {AFTER_PIPELINE.slice(rowStart, rowStart + 4).map((step, i) => (
+                      <div key={step.label} className="relative flex flex-col items-center text-center gap-2.5 px-1" style={riseStyle(inView, 0.3 + (rowStart + i) * 0.08, 10)}>
+                        <span className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-white text-[12px] font-bold shrink-0 shadow-[0_8px_18px_-8px_rgba(196,24,147,0.9)]" style={{ background: GRADIENT, border: "1px solid rgba(255,255,255,0.22)" }}>
+                          {rowStart + i + 1}
+                        </span>
+                        <span className="text-[12.5px] font-bold leading-tight">{step.label}</span>
+                        <span className="text-[11px] leading-snug" style={{ color: C.lilac }}>{step.carries}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
 
               {/* Vertical rail on xs */}
               <div className="mt-8 flex sm:hidden flex-col">
                 {AFTER_PIPELINE.map((step, i) => (
-                  <div key={step.verb} className="flex gap-4" style={riseStyle(inView, 0.2 + i * 0.08, 8)}>
+                  <div key={step.label} className="flex gap-4" style={riseStyle(inView, 0.1 + i * 0.05, 8)}>
                     <div className="flex flex-col items-center">
                       <span className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[11px] font-bold shrink-0" style={{ background: GRADIENT, border: "1px solid rgba(255,255,255,0.22)" }}>
                         {i + 1}
@@ -174,14 +172,14 @@ export default function BeforeAfter() {
                       {i < AFTER_PIPELINE.length - 1 && <span className="w-px flex-1 my-1" style={{ background: "rgba(255,255,255,0.18)" }} />}
                     </div>
                     <div className="pb-6">
-                      <p className="text-[14.5px] font-bold">{step.verb}</p>
-                      <p className="text-[12.5px] mt-0.5" style={{ color: C.lilac }}>{step.text}</p>
+                      <p className="text-[14.5px] font-bold">{step.label}</p>
+                      <p className="text-[12.5px] mt-0.5" style={{ color: C.lilac }}>{step.carries}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <p className="mt-8 text-[13.5px] leading-[1.6]" style={{ color: C.lilac }}>
+              <p className="mt-8 text-[13.5px] leading-[1.6] font-semibold text-white">
                 {AFTER_FOOT}
               </p>
             </div>

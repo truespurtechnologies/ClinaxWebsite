@@ -3,7 +3,14 @@
 // Reads the raw product screenshots from `assets/raw/`
 // (which contain Physiora-specific demo branding) and writes clean,
 // kebab-case copies into `public/images/` with the Physiora text
-// regions blurred out. Originals are left untouched.
+// regions redacted. Originals are left untouched.
+//
+// Redaction is a flat-fill patch (colour sampled from the pixel just above
+// the region, which is reliably background on every screen we redact) —
+// not a blur. A blurred patch still reads as a smudge/defect at hero scale;
+// a flat fill the same colour as its surroundings makes the text simply
+// disappear. Add an explicit `color` on a region (e.g. "#FFFFFF") to
+// override the sample if a region ever sits on a busier background.
 //
 // Usage: node scripts/blur-screenshots.mjs (requires: pnpm add -D sharp)
 import sharp from "sharp"
@@ -22,8 +29,8 @@ const JOBS = [
     src: "Reception Front Desk.png",
     out: "front-desk.png",
     regions: [
-      { x: 48, y: 30, w: 120, h: 18 }, // sidebar "Physiora Clinic Platform"
-      { x: 1108, y: 12, w: 140, h: 28 }, // header branch chip "Physiora Velachery"
+      { x: 8, y: 33, w: 155, h: 17, color: "#FFFFFF" }, // sidebar "Physiora Clinic Platform"
+      { x: 1102, y: 3, w: 160, h: 44, color: "#FFFFFF" }, // header branch chip + drop shadow "Physiora Velachery"
       { x: 248, y: 84, w: 60, h: 16 }, // subtitle "Physiora • ..."
     ],
   },
@@ -31,27 +38,29 @@ const JOBS = [
     src: "Schedule.png",
     out: "schedule.png",
     regions: [
-      { x: 40, y: 28, w: 120, h: 18 }, // sidebar "Physiora Clinic Platform"
-      { x: 1100, y: 2, w: 200, h: 32 }, // header branch chip "Physiora Velachery"
-      { x: 1030, y: 150, w: 175, h: 30 }, // branch dropdown "Physiora Velachery"
+      { x: 8, y: 33, w: 155, h: 17, color: "#FFFFFF" }, // sidebar "Physiora Clinic Platform"
+      { x: 1100, y: 3, w: 155, h: 44, color: "#FFFFFF" }, // header branch chip + drop shadow "Physiora Velachery"
+      { x: 1028, y: 144, w: 175, h: 38, color: "#FFFFFF" }, // branch dropdown "Physiora Velachery"
     ],
   },
   {
     src: "Therapist Dashboard.png",
     out: "therapist-dashboard.png",
     regions: [
-      { x: 800, y: 6, w: 150, h: 30 }, // header branch chip
-      { x: 0, y: 88, w: 130, h: 16 }, // "Physiora Velachery • ..."
+      { x: 800, y: 3, w: 150, h: 44, color: "#FFFFFF" }, // header branch chip + drop shadow
+      { x: 0, y: 87, w: 140, h: 18 }, // "Physiora Velachery • ..."
     ],
   },
   {
     src: "Management Dashboard.png",
     out: "management-dashboard.png",
     regions: [
-      { x: 28, y: 34, w: 140, h: 14 }, // sidebar "Physiora Clinic Platform"
-      { x: 1140, y: 6, w: 185, h: 28 }, // header branch chip "Physiora Velachery"
-      { x: 210, y: 78, w: 150, h: 18 }, // subtitle "Physiora Velachery • ..."
-      { x: 1250, y: 60, w: 242, h: 40 }, // branch tabs Velachery/Nungambakkam/OMR
+      { x: 8, y: 33, w: 155, h: 17, color: "#FFFFFF" }, // sidebar "Physiora Clinic Platform"
+      // explicit white: sampling 3px above would hit the thin dark accent
+      // bar at the very top of this screen, not the header background.
+      { x: 1145, y: 4, w: 160, h: 46, color: "#FFFFFF" }, // header branch chip + its drop shadow "Physiora Velachery"
+      { x: 215, y: 80, w: 172, h: 16 }, // subtitle "Physiora Velachery • 10 Aug 2026"
+      { x: 1202, y: 62, w: 290, h: 36, color: "#FFFFFF" }, // branch tabs All/Velachery/Nungambakkam/OMR
     ],
   },
   // Visit screens have no Physiora-specific text — copy through unchanged.
@@ -61,15 +70,28 @@ const JOBS = [
   { src: "Visit 5.png", out: "visit-complete.png", regions: [] },
 ]
 
-async function blurRegion(image, meta, region) {
-  const { x, y, w, h } = region
+async function sampleColor(image, meta, x, y) {
+  const sx = Math.min(Math.max(x, 0), meta.width - 1)
+  const sy = Math.min(Math.max(y - 3, 0), meta.height - 1) // a few px above the region, reliably background
+  const { data, info } = await image
+    .clone()
+    .extract({ left: sx, top: sy, width: 1, height: 1 })
+    .raw()
+    .toBuffer({ resolveWithObject: true })
+  const [r, g, b] = data
+  return info.channels === 4 ? { r, g, b, alpha: data[3] / 255 } : { r, g, b, alpha: 1 }
+}
+
+async function fillRegion(image, meta, region) {
+  const { x, y, w, h, color } = region
   const clampedW = Math.min(w, meta.width - x)
   const clampedH = Math.min(h, meta.height - y)
   if (clampedW <= 0 || clampedH <= 0) return null
-  const blurredPatch = await sharp(await image.clone().extract({ left: x, top: y, width: clampedW, height: clampedH }).toBuffer())
-    .blur(14)
+  const background = color ?? (await sampleColor(image, meta, x, y))
+  const patch = await sharp({ create: { width: clampedW, height: clampedH, channels: 4, background } })
+    .png()
     .toBuffer()
-  return { input: blurredPatch, left: x, top: y }
+  return { input: patch, left: x, top: y }
 }
 
 async function run() {
@@ -95,12 +117,12 @@ async function run() {
 
     const composites = []
     for (const region of job.regions) {
-      const patch = await blurRegion(base, meta, region)
+      const patch = await fillRegion(base, meta, region)
       if (patch) composites.push(patch)
     }
 
     await sharp(srcPath).composite(composites).toFile(outPath)
-    console.log(`blurred  ${job.src} -> ${job.out} (${composites.length} regions)`)
+    console.log(`redacted ${job.src} -> ${job.out} (${composites.length} regions)`)
   }
 }
 

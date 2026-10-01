@@ -2,7 +2,7 @@ import Link from "next/link"
 import { C } from "./theme"
 import { FOOTER_LINKS, LEGAL_LINKS } from "./content"
 import { ClinaxLogo } from "./Nav"
-import { CONTACT_EMAIL } from "@/lib/site"
+import { CONTACT_EMAIL, TRUESPUR_URL } from "@/lib/site"
 
 export default function Footer() {
   return (
@@ -11,22 +11,23 @@ export default function Footer() {
         <div className="flex flex-col items-center md:items-start gap-2">
           <ClinaxLogo variant="reversed" height={36} />
           <p className="text-[11px]" style={{ color: C.lilac }}>
-            The clinical operating system for physiotherapy &amp; rehabilitation clinics · A TrueSpur product
+            The clinical operating system for physiotherapy &amp; rehabilitation clinics ·{" "}
+            <a href={TRUESPUR_URL} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-80">
+              A TrueSpur product
+            </a>
           </p>
         </div>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
           {FOOTER_LINKS.map((l) => (
-            <a
+            <Link
               key={l.href}
               href={l.href}
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-[13px] font-medium transition-opacity hover:opacity-70"
               style={{ color: C.lavenderTint }}
             >
               {l.label}
-            </a>
+            </Link>
           ))}
           {LEGAL_LINKS.map((l) => (
             <Link

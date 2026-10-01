@@ -22,9 +22,9 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 })
 
-const TITLE = "Clinax — The Clinical Operating System for Physiotherapy & Rehabilitation Clinics"
+const TITLE = "Clinax — Clinical Operating System for Physio & Rehab Clinics"
 const DESCRIPTION =
-  "Physiotherapy clinic management software for growing physiotherapy & rehabilitation clinics. Clinax replaces WhatsApp, spreadsheets and paper with one clinical operating system connecting reception, therapists, patients and leadership."
+  "Clinax replaces WhatsApp, spreadsheets and paper with one clinical operating system connecting reception, therapists and leadership — built for growing physiotherapy & rehabilitation clinics."
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

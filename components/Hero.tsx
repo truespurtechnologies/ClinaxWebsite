@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { C, HEADING } from "./theme"
-import { CAPABILITIES, CTA, HERO } from "./content"
+import { CAPABILITIES, HERO } from "./content"
 import { PrimaryButton, GhostButton } from "./ui"
 
 function CheckDot() {
@@ -41,17 +41,15 @@ export function ProductFrame({
           Clinax · {label}
         </span>
       </div>
-      <div className="overflow-x-auto">
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          priority={priority}
-          sizes="(min-width: 1280px) 1100px, (min-width: 640px) 92vw, 640px"
-          className="w-full min-w-[640px] h-auto block"
-        />
-      </div>
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        priority={priority}
+        sizes="(min-width: 1280px) 1100px, (min-width: 640px) 92vw, 640px"
+        className="w-full h-auto block"
+      />
     </div>
   )
 }
@@ -109,14 +107,11 @@ export default function Hero() {
             }}
           >
             <span className="cx2-badge-sheen pointer-events-none absolute inset-0 rounded-full" aria-hidden="true" />
-            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: C.magenta }} aria-hidden="true" />
-            {HERO.eyebrow}
-            <span className="hidden sm:block w-px h-3.5 shrink-0" style={{ background: "rgba(255,255,255,0.18)" }} aria-hidden="true" />
             <span className="relative flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
               <span className="absolute inline-flex h-full w-full rounded-full animate-ping motion-reduce:animate-none opacity-60" style={{ background: C.magenta }} />
               <span className="relative inline-flex rounded-full w-1.5 h-1.5" style={{ background: C.magenta }} />
             </span>
-            {CTA.status}
+            {HERO.eyebrow}
           </span>
           <h1
             className="mt-7 text-[2.5rem] sm:text-[3.4rem] lg:text-[4.1rem] leading-[1.03] font-bold tracking-[-0.015em] text-white"
@@ -124,10 +119,7 @@ export default function Hero() {
           >
             {HERO.headline}
           </h1>
-          <p className="mt-7 text-[1.1rem] sm:text-[1.25rem] font-semibold text-white">
-            {HERO.icp}
-          </p>
-          <p className="mt-3 text-[1.05rem] sm:text-[1.15rem] leading-[1.65] max-w-2xl" style={{ color: C.lilac }}>
+          <p className="mt-7 text-[1.05rem] sm:text-[1.15rem] leading-[1.65] max-w-2xl" style={{ color: C.lilac }}>
             {HERO.sub}
           </p>
 
@@ -135,7 +127,7 @@ export default function Hero() {
             <PrimaryButton href="#demo" size="lg">
               {HERO.primaryCta}
             </PrimaryButton>
-            <GhostButton href="#platform" dark size="lg">
+            <GhostButton href="#product" dark size="lg">
               {HERO.secondaryCta}
             </GhostButton>
           </div>

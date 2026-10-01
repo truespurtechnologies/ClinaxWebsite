@@ -8,10 +8,9 @@ import { SectionHeading, PrimaryButton, GhostButton } from "./ui"
 
 // ─── Tabbed feature explorer — the primary product proof ────────────────────
 
-// Guided-tour pacing: sub-step screens cycle like chapters, then the tour
-// moves to the next tab on the slower cadence.
+// Guided-tour pacing: Clinical Care sub-step screens cycle like chapters.
+// The tour never switches tabs on its own.
 const SUB_STEP_MS = 4200
-const TAB_MS = 6500
 
 export default function ProductExperience() {
   const [tab, setTab] = useState(0)
@@ -60,28 +59,19 @@ export default function ProductExperience() {
     else if (e.key === "End") { e.preventDefault(); selectSub(subStepsWithScreens.length ? steps.indexOf(subStepsWithScreens[subStepsWithScreens.length - 1]) : 0) }
   }
 
-  // Gentle auto-advance through the tour. Tabs with sub-steps play through
-  // each screen-bearing step before moving on; other tabs advance directly.
-  // Pauses on hover/focus and stops permanently once the visitor takes
-  // control (click or arrow keys); disabled entirely under
-  // prefers-reduced-motion.
+  // Gentle auto-advance through the Clinical Care sub-steps only — the
+  // reader picked a tab on purpose, so the tour never switches tabs out from
+  // under them. Pauses on hover/focus and stops permanently once the
+  // visitor takes control (click or arrow keys); disabled entirely under
+  // prefers-reduced-motion or on touch devices (no hover to pause it there).
   const autoAdvance = !hovering && !focused && !userPaused
   useEffect(() => {
     if (!autoAdvance) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    if (window.matchMedia("(pointer: coarse)").matches) return
     const nextScreenSub = current.subSteps?.findIndex((s, i) => i > sub && s.src) ?? -1
-    const id = setTimeout(
-      () => {
-        if (nextScreenSub >= 0) setSub(nextScreenSub)
-        else
-          setTab((t) => {
-            const next = (t + 1) % FEATURE_TABS.length
-            setSub(Math.max(FEATURE_TABS[next].subSteps?.findIndex((s) => s.src) ?? 0, 0))
-            return next
-          })
-      },
-      nextScreenSub >= 0 ? SUB_STEP_MS : TAB_MS,
-    )
+    if (nextScreenSub < 0) return
+    const id = setTimeout(() => setSub(nextScreenSub), SUB_STEP_MS)
     return () => clearTimeout(id)
   }, [tab, sub, autoAdvance, current])
 
@@ -103,8 +93,8 @@ export default function ProductExperience() {
         <SectionHeading
           dark
           eyebrow="See it in action"
-          title={<>One connected workflow, from the front desk to the treatment floor.</>}
-          sub="Real Clinax screens across the roles that run your clinic every day."
+          title={<>See how a day runs on Clinax.</>}
+          sub="Real screens from the roles that run your clinic every day."
         />
 
         {/* Tab strip */}
@@ -260,15 +250,15 @@ export default function ProductExperience() {
                   Clinax · {current.label}{activeSubStep ? ` · ${activeSubStep.label}` : ""}
                 </span>
               </div>
-              <div className="overflow-x-auto">
+              <div>
                 <Image
                   key={screen.src}
                   src={screen.src}
                   alt={screen.alt}
                   width={screen.width}
                   height={screen.height}
-                  sizes="(min-width: 1024px) 60vw, (min-width: 640px) 92vw, 640px"
-                  className="w-full min-w-[640px] h-auto block cx2-fade-in"
+                  sizes="(min-width: 1024px) 60vw, 92vw"
+                  className="w-full h-auto block cx2-fade-in"
                 />
               </div>
               <div className="px-4 py-2 border-t" style={{ background: C.surface, borderColor: C.lavender }}>
@@ -282,7 +272,7 @@ export default function ProductExperience() {
 
         <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3.5">
           <PrimaryButton href="#demo" size="lg">{CTA.primary}</PrimaryButton>
-          <GhostButton href="#demo" dark>{CTA.secondary}</GhostButton>
+          <GhostButton href="#how-it-works" dark>How onboarding works</GhostButton>
         </div>
       </div>
 

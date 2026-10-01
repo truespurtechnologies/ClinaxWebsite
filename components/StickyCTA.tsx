@@ -6,7 +6,9 @@ import { CTA } from "./content"
 import { PrimaryButton } from "./ui"
 
 // Appears once the hero has scrolled out and hides again near the demo form,
-// where a duplicate CTA would just be noise.
+// where a duplicate CTA would just be noise. Desktop/tablet already has the
+// primary CTA pinned in the nav bar, so this is mobile-only (where that
+// button is hidden behind the hamburger menu).
 export default function StickyCTA() {
   const [visible, setVisible] = useState(false)
 
@@ -26,7 +28,7 @@ export default function StickyCTA() {
 
   return (
     <div
-      className={`fixed bottom-4 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none transition-all duration-300 ${
+      className={`md:hidden fixed bottom-4 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none transition-all duration-300 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 invisible"
       }`}
       aria-hidden={!visible}
