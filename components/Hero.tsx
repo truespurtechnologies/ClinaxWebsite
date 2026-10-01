@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { C, HEADING } from "./theme"
 import { CAPABILITIES, CTA, HERO } from "./content"
-import { PrimaryButton, GhostButton, Eyebrow } from "./ui"
+import { PrimaryButton, GhostButton } from "./ui"
 
 function CheckDot() {
   return (
@@ -99,16 +99,25 @@ export default function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8 pt-16 pb-20 sm:pt-24">
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
-          <div className="flex flex-wrap items-center justify-center gap-2.5">
-            <Eyebrow dark>{HERO.eyebrow}</Eyebrow>
-            <span
-              className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] uppercase"
-              style={{ background: "rgba(196,24,147,0.18)", color: C.lavenderTint, border: "1px solid rgba(196,24,147,0.4)" }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.magenta }} aria-hidden="true" />
-              {CTA.status}
+          <span
+            className="relative inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 rounded-full px-4 py-2 overflow-hidden backdrop-blur-sm text-[11px] font-bold tracking-[0.14em] uppercase"
+            style={{
+              background: "rgba(255,255,255,0.07)",
+              color: C.lavenderTint,
+              border: "1px solid rgba(255,255,255,0.16)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10), 0 0 30px rgba(196,24,147,0.12)",
+            }}
+          >
+            <span className="cx2-badge-sheen pointer-events-none absolute inset-0 rounded-full" aria-hidden="true" />
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: C.magenta }} aria-hidden="true" />
+            {HERO.eyebrow}
+            <span className="hidden sm:block w-px h-3.5 shrink-0" style={{ background: "rgba(255,255,255,0.18)" }} aria-hidden="true" />
+            <span className="relative flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full rounded-full animate-ping motion-reduce:animate-none opacity-60" style={{ background: C.magenta }} />
+              <span className="relative inline-flex rounded-full w-1.5 h-1.5" style={{ background: C.magenta }} />
             </span>
-          </div>
+            {CTA.status}
+          </span>
           <h1
             className="mt-7 text-[2.5rem] sm:text-[3.4rem] lg:text-[4.1rem] leading-[1.03] font-bold tracking-[-0.015em] text-white"
             style={HEADING}
@@ -168,7 +177,9 @@ export default function Hero() {
         @keyframes cx2Marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         .cx2-marquee { animation: cx2Marquee 42s linear infinite; }
         .cx2-marquee:hover { animation-play-state: paused; }
-        @media (prefers-reduced-motion: reduce) { .cx2-marquee { animation: none; flex-wrap: wrap; width: 100%; justify-content: center; } }
+        .cx2-badge-sheen { background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.16) 50%, transparent 65%); transform: translateX(-110%); animation: cx2BadgeSheen 6s cubic-bezier(0.4, 0, 0.2, 1) 1.2s infinite; }
+        @keyframes cx2BadgeSheen { 0% { transform: translateX(-110%); } 45% { transform: translateX(110%); } 100% { transform: translateX(110%); } }
+        @media (prefers-reduced-motion: reduce) { .cx2-marquee { animation: none; flex-wrap: wrap; width: 100%; justify-content: center; } .cx2-badge-sheen { animation: none; } }
       `}</style>
     </section>
   )

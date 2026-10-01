@@ -17,7 +17,7 @@ function HubDiagram({ active }: { active: boolean }) {
     { x: 530, y: 254 },
   ]
   return (
-    <svg viewBox="0 0 600 300" className="w-full h-auto max-w-[760px] mx-auto" fill="none" aria-hidden="true">
+    <svg viewBox="-34 -8 668 316" className="w-full h-auto max-w-[760px] mx-auto" fill="none" aria-hidden="true">
       <defs>
         <linearGradient id="cx2-core-light" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor={C.violet} />

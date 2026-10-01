@@ -23,6 +23,12 @@ tokens in `components/theme.ts`. See README.md for layout and env vars.
   them it returns a 500 with "Email service is not configured" - that is expected locally.
 - `assets/raw/` holds Physiora-branded source screenshots. Never move them into `public/`. Regenerate the
   blurred `public/images/*.png` with `scripts/blur-screenshots.mjs` (needs `sharp` installed ad hoc).
+- `assets/Logo/` holds brand source files; `assets/Logo/svg/` holds the SVG masters (vectorised from the
+  approved raster by `scripts/trace_logo.py`, needs `pip install vtracer pillow`). Derivatives
+  (`public/logo/*.svg|png|webp`, `app/icon.png`, `app/apple-icon.png`) come from `scripts/build-logo.mjs`
+  (needs `sharp`). Usage rules: primary/compact lockups on light backgrounds, `-reversed` on dark,
+  `clinax-mark` icon for favicon/small contexts. `ClinaxLogo`/`ClinaxMark` in `components/Nav.tsx`
+  implement this — the navy wordmark is never placed on dark backgrounds.
 
 ## Origin
 

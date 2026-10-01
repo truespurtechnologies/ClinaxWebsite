@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { C, HEADING } from "./theme"
-import { ClinaxMark } from "./Nav"
+import { ClinaxLogo } from "./Nav"
 import Footer from "./Footer"
 import type { LegalDoc } from "./legal"
 
@@ -13,10 +13,7 @@ export default function LegalPage({ doc }: { doc: LegalDoc }) {
       <header className="bg-white" style={{ borderBottom: `1px solid ${C.lavender}` }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5" aria-label="Clinax — back to homepage">
-            <ClinaxMark size={30} />
-            <span className="font-extrabold tracking-[-0.01em] text-[19px]" style={{ color: C.ink }}>
-              Clinax
-            </span>
+            <ClinaxLogo variant="primary" height={34} />
             <span className="hidden sm:inline text-[11px] font-medium tracking-wide border-l pl-2.5 ml-0.5" style={{ color: C.muted, borderColor: C.lavender }}>
               by TrueSpur
             </span>
