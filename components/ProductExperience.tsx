@@ -8,6 +8,11 @@ import { SectionHeading, PrimaryButton, GhostButton } from "./ui"
 
 // ─── Tabbed feature explorer — the primary product proof ────────────────────
 
+// Guided-tour pacing: sub-step screens cycle like chapters, then the tour
+// moves to the next tab on the slower cadence.
+const SUB_STEP_MS = 4200
+const TAB_MS = 6500
+
 export default function ProductExperience() {
   const [tab, setTab] = useState(0)
   const [sub, setSub] = useState(() => Math.max(FEATURE_TABS[0].subSteps?.findIndex((s) => s.src) ?? 0, 0))
@@ -55,22 +60,30 @@ export default function ProductExperience() {
     else if (e.key === "End") { e.preventDefault(); selectSub(subStepsWithScreens.length ? steps.indexOf(subStepsWithScreens[subStepsWithScreens.length - 1]) : 0) }
   }
 
-  // Gentle auto-advance through the tour. Pauses on hover/focus and stops
-  // permanently once the visitor takes control (click or arrow keys);
-  // disabled entirely under prefers-reduced-motion.
+  // Gentle auto-advance through the tour. Tabs with sub-steps play through
+  // each screen-bearing step before moving on; other tabs advance directly.
+  // Pauses on hover/focus and stops permanently once the visitor takes
+  // control (click or arrow keys); disabled entirely under
+  // prefers-reduced-motion.
   const autoAdvance = !hovering && !focused && !userPaused
   useEffect(() => {
     if (!autoAdvance) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-    const id = setTimeout(() => {
-      setTab((t) => {
-        const next = (t + 1) % FEATURE_TABS.length
-        setSub(Math.max(FEATURE_TABS[next].subSteps?.findIndex((s) => s.src) ?? 0, 0))
-        return next
-      })
-    }, 6500)
+    const nextScreenSub = current.subSteps?.findIndex((s, i) => i > sub && s.src) ?? -1
+    const id = setTimeout(
+      () => {
+        if (nextScreenSub >= 0) setSub(nextScreenSub)
+        else
+          setTab((t) => {
+            const next = (t + 1) % FEATURE_TABS.length
+            setSub(Math.max(FEATURE_TABS[next].subSteps?.findIndex((s) => s.src) ?? 0, 0))
+            return next
+          })
+      },
+      nextScreenSub >= 0 ? SUB_STEP_MS : TAB_MS,
+    )
     return () => clearTimeout(id)
-  }, [tab, autoAdvance])
+  }, [tab, sub, autoAdvance, current])
 
   return (
     <section
@@ -121,60 +134,78 @@ export default function ProductExperience() {
           })}
         </div>
 
-        {/* Clinical workflow stepper — visible only on the Clinical Care tab.
-            The whole six-step workflow reads at a glance; steps with a real
-            screen are interactive, the rest stay visible but dimmed. */}
+        {/* Clinical workflow scrubber — visible only on the Clinical Care
+            tab. Six chapter segments read at a glance; the active chapter
+            fills while the guided tour plays. Steps with a real screen are
+            interactive, the rest stay visible as outlined placeholders. */}
         {current.subSteps && (
-          <div
-            role="tablist"
-            aria-label="Clinical care steps"
-            onKeyDown={onSubKeyDown}
-            className="mt-10 -mx-5 px-5 sm:mx-0 sm:px-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            <div className="relative min-w-[620px] pb-1">
-              <div className="absolute top-[15px] left-[8%] right-[8%] h-px" style={{ background: "rgba(255,255,255,0.14)" }} aria-hidden="true">
-                <div
-                  className="h-full"
-                  style={{
-                    background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`,
-                    width: `${(sub / (current.subSteps.length - 1)) * 100}%`,
-                    transition: "width 0.45s cubic-bezier(0.22,1,0.36,1)",
-                  }}
-                />
-              </div>
-              <div className="relative grid grid-cols-6">
-                {current.subSteps.map((s, i) => {
-                  const hasScreen = Boolean(s.src)
-                  const selected = hasScreen && i === sub
-                  return (
-                    <button
-                      key={s.key}
-                      role="tab"
-                      aria-selected={selected}
-                      aria-disabled={!hasScreen}
-                      tabIndex={selected ? 0 : -1}
-                      onClick={() => selectSub(i)}
-                      disabled={!hasScreen}
-                      title={hasScreen ? undefined : "Shown in the clinical workflow — screenshot coming soon"}
-                      className={`flex flex-col items-center gap-3 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-lg py-1 ${hasScreen ? "cursor-pointer" : "cursor-default"}`}
+          <div role="tablist" aria-label="Clinical care steps" onKeyDown={onSubKeyDown} className="mt-12">
+            <div className="mb-4 flex items-baseline justify-end">
+              <span className="text-[11px] font-bold tracking-[0.22em] tabular-nums" style={{ color: "rgba(255,255,255,0.38)" }}>
+                <span style={{ color: C.white }}>{String(sub + 1).padStart(2, "0")}</span>
+                {" / "}
+                {String(current.subSteps.length).padStart(2, "0")}
+              </span>
+            </div>
+            <div className="flex gap-1.5 sm:gap-2.5">
+              {current.subSteps.map((s, i) => {
+                const hasScreen = Boolean(s.src)
+                const selected = hasScreen && i === sub
+                const passed = hasScreen && i < sub
+                return (
+                  <button
+                    key={s.key}
+                    role="tab"
+                    aria-selected={selected}
+                    aria-disabled={!hasScreen}
+                    tabIndex={selected ? 0 : -1}
+                    onClick={() => selectSub(i)}
+                    disabled={!hasScreen}
+                    title={hasScreen ? undefined : "Shown in the clinical workflow — screenshot coming soon"}
+                    className={`cx2-chapter flex min-w-0 flex-1 flex-col items-start gap-2.5 rounded-md px-0.5 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${hasScreen ? "cursor-pointer" : "cursor-default"}`}
+                  >
+                    <span
+                      className="cx2-chapter-bar relative block h-[3px] w-full overflow-hidden rounded-full transition-colors duration-200"
+                      style={
+                        hasScreen
+                          ? { background: "rgba(255,255,255,0.12)" }
+                          : { background: "transparent", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.28)" }
+                      }
                     >
-                      <span
-                        className={`w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold transition-all duration-200 ${hasScreen ? "" : "opacity-55"}`}
-                        style={
-                          selected
-                            ? { background: C.white, color: C.violetDeep, boxShadow: "0 8px 22px -8px rgba(255,255,255,0.55)" }
-                            : { background: "rgba(255,255,255,0.08)", color: C.lavenderTint, border: hasScreen ? "1px solid rgba(255,255,255,0.16)" : "1px dashed rgba(255,255,255,0.28)" }
-                        }
-                      >
-                        {i + 1}
-                      </span>
-                      <span className={`text-[11.5px] font-semibold leading-none ${hasScreen ? "" : "opacity-55"}`} style={{ color: selected ? C.white : C.lilac }}>
-                        {s.label}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
+                      {hasScreen && (
+                        <span
+                          key={selected ? `active-${sub}` : `idle-${i}`}
+                          className="absolute inset-y-0 left-0 rounded-full"
+                          style={
+                            selected
+                              ? {
+                                  width: "100%",
+                                  background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`,
+                                  boxShadow: "0 0 16px rgba(196,24,147,0.6)",
+                                  animationName: userPaused ? "none" : "cx2ChapterFill",
+                                  animationDuration: `${SUB_STEP_MS}ms`,
+                                  animationTimingFunction: "linear",
+                                  animationFillMode: "forwards",
+                                  animationPlayState: autoAdvance ? "running" : "paused",
+                                }
+                              : {
+                                  width: passed ? "100%" : "0%",
+                                  background: "rgba(231,217,247,0.4)",
+                                  transition: "width 0.35s ease",
+                                }
+                          }
+                        />
+                      )}
+                    </span>
+                    <span
+                      className={`cx2-chapter-label text-[9.5px] sm:text-[11px] font-semibold uppercase leading-tight tracking-[0.06em] sm:tracking-[0.1em] transition-colors duration-200 ${hasScreen ? "" : "opacity-45"}`}
+                      style={{ color: selected ? C.white : C.lilac }}
+                    >
+                      {s.label}
+                    </span>
+                  </button>
+                )
+              })}
             </div>
           </div>
         )}
@@ -258,6 +289,9 @@ export default function ProductExperience() {
       <style>{`
         @keyframes cx2FadeIn { from { opacity: 0; } to { opacity: 1; } }
         .cx2-fade-in { animation: cx2FadeIn 0.35s ease-out; }
+        @keyframes cx2ChapterFill { from { width: 0; } to { width: 100%; } }
+        .cx2-chapter:not(:disabled):hover .cx2-chapter-label { color: ${C.white}; }
+        .cx2-chapter:not(:disabled):hover .cx2-chapter-bar { background: rgba(255,255,255,0.24); }
         @media (prefers-reduced-motion: reduce) { #product * { animation: none !important; transition-duration: 0.01ms !important; } }
       `}</style>
     </section>
