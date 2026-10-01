@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { C } from "./theme"
+import { C, GRADIENT } from "./theme"
 import { CTA, NAV_LINKS } from "./content"
 import { scrollToId } from "./motion"
 import { PrimaryButton } from "./ui"
@@ -35,12 +35,37 @@ export function ClinaxLogo({
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState("")
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 24)
     handler()
     window.addEventListener("scroll", handler, { passive: true })
     return () => window.removeEventListener("scroll", handler)
+  }, [])
+
+  // Scroll-spy: a section counts as "current" while it crosses the middle
+  // band of the viewport. When several match, the lowest one wins — that's
+  // the section the reader is moving into.
+  useEffect(() => {
+    const links = NAV_LINKS.map((l) => l.href)
+    const visible = new Set<string>()
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const href = `#${e.target.id}`
+          if (e.isIntersecting) visible.add(href)
+          else visible.delete(href)
+        })
+        setActive([...links].reverse().find((h) => visible.has(h)) ?? "")
+      },
+      { rootMargin: "-35% 0px -55% 0px" }
+    )
+    links.forEach((h) => {
+      const el = document.getElementById(h.slice(1))
+      if (el) obs.observe(el)
+    })
+    return () => obs.disconnect()
   }, [])
 
   const go = (href: string) => {
@@ -75,17 +100,25 @@ export default function Nav() {
         </a>
 
         <nav className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={(e) => { e.preventDefault(); go(l.href) }}
-              className="text-[14px] font-semibold transition-opacity duration-150 hover:opacity-70 cursor-pointer"
-              style={{ color: textColor }}
-            >
-              {l.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((l) => {
+            const isActive = active === l.href
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => { e.preventDefault(); go(l.href) }}
+                className="relative text-[14px] font-semibold transition-opacity duration-150 hover:opacity-70 cursor-pointer py-1"
+                style={{ color: isActive ? (onDark ? C.white : C.violet) : textColor }}
+              >
+                {l.label}
+                <span
+                  className="absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full transition-opacity duration-200"
+                  style={{ background: GRADIENT, opacity: isActive ? 1 : 0 }}
+                  aria-hidden="true"
+                />
+              </a>
+            )
+          })}
         </nav>
 
         <div className="hidden md:flex items-center gap-3">

@@ -6,7 +6,6 @@ import BeforeAfter from "@/components/BeforeAfter"
 import Platform from "@/components/Platform"
 import ProductExperience from "@/components/ProductExperience"
 import PatientJourney from "@/components/PatientJourney"
-import RoleCards from "@/components/RoleCards"
 import Steps from "@/components/Steps"
 import WhyClinax from "@/components/WhyClinax"
 import Intelligence from "@/components/Intelligence"
@@ -28,7 +27,6 @@ export default function ClinaxPage() {
         <Platform />
         <ProductExperience />
         <PatientJourney />
-        <RoleCards />
         <Steps />
         <WhyClinax />
         <Intelligence />

@@ -11,7 +11,7 @@ export default function Footer() {
         <div className="flex flex-col items-center md:items-start gap-2">
           <ClinaxLogo variant="reversed" height={36} />
           <p className="text-[11px]" style={{ color: C.lilac }}>
-            The Clinical Operating System · A TrueSpur Product
+            The clinical operating system for physiotherapy &amp; rehabilitation clinics · A TrueSpur product
           </p>
         </div>
 

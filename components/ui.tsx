@@ -136,6 +136,11 @@ export function SectionHeading({
   )
 }
 
+// Shared card hover affordance — lift + soft violet shadow. Borders stay
+// inline-styled, so only transform/shadow animate on hover.
+export const CARD_HOVER =
+  "transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_18px_44px_-22px_rgba(91,15,193,0.4)]"
+
 export function Highlight({ children }: { children: ReactNode }) {
   return (
     <span

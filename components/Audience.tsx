@@ -17,8 +17,8 @@ const ICONS = [
 ]
 
 // Sits directly after the hero so a visitor recognises "this is for clinics
-// like mine" before the problem narrative. Kept compact — the detailed proof
-// comes later in Platform, ProductExperience and the patient journey.
+// like mine" before the problem narrative. A single bordered band — a quick
+// qualifier, not another card grid.
 export default function Audience() {
   const { ref, inView } = useInView(0.2)
   return (
@@ -29,29 +29,37 @@ export default function Audience() {
           title="Built for growing clinics."
         />
 
-        <div ref={ref} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {AUDIENCE.map((a, i) => (
-            <div
-              key={a.title}
-              className="rounded-2xl p-6 sm:p-7 flex flex-col bg-white"
-              style={{ ...riseStyle(inView, i * 0.08), border: `1px solid ${C.lavender}` }}
-            >
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: GRADIENT }}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  {ICONS[i]}
-                </svg>
-              </span>
-              <h3 className="mt-5 text-[1.1rem] leading-tight font-bold" style={{ ...HEADING, color: C.ink }}>
-                {a.title}
-              </h3>
-              <p className="mt-2.5 text-[14px] leading-[1.6]" style={{ color: C.muted }}>
-                {a.text}
-              </p>
-            </div>
-          ))}
+        <div
+          ref={ref}
+          className="rounded-3xl overflow-hidden"
+          style={{ border: `1px solid ${C.lavender}`, ...riseStyle(inView, 0) }}
+        >
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: C.lavender }}>
+            {AUDIENCE.map((a, i) => (
+              <div
+                key={a.title}
+                className="flex gap-4 p-6 sm:p-7 bg-white transition-colors duration-200 hover:bg-[#FBF9FE]"
+                style={riseStyle(inView, i * 0.08)}
+              >
+                <span className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-white" style={{ background: GRADIENT }}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    {ICONS[i]}
+                  </svg>
+                </span>
+                <div>
+                  <h3 className="text-[1.05rem] leading-tight font-bold" style={{ ...HEADING, color: C.ink }}>
+                    {a.title}
+                  </h3>
+                  <p className="mt-2 text-[13.5px] leading-[1.6]" style={{ color: C.muted }}>
+                    {a.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <p className="mt-10 text-center text-[14px] font-medium" style={{ color: C.muted }}>
+        <p className="mt-8 text-center text-[14px] font-medium" style={{ color: C.muted }}>
           {AUDIENCE_SUPPORT}
         </p>
       </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, type KeyboardEvent } from "react"
+import { useEffect, useRef, useState, type KeyboardEvent } from "react"
 import Image from "next/image"
 import { C, GRADIENT, HEADING } from "./theme"
 import { CTA, FEATURE_TABS } from "./content"
@@ -11,6 +11,9 @@ import { SectionHeading, PrimaryButton, GhostButton } from "./ui"
 export default function ProductExperience() {
   const [tab, setTab] = useState(0)
   const [sub, setSub] = useState(() => Math.max(FEATURE_TABS[0].subSteps?.findIndex((s) => s.src) ?? 0, 0))
+  const [hovering, setHovering] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const [userPaused, setUserPaused] = useState(false)
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
   const current = FEATURE_TABS[tab]
   const subStepsWithScreens = current.subSteps?.filter((s) => s.src) ?? []
@@ -29,6 +32,7 @@ export default function ProductExperience() {
   }
 
   const onKeyDown = (e: KeyboardEvent) => {
+    setUserPaused(true)
     if (e.key === "ArrowRight") { e.preventDefault(); goTo(tab + 1) }
     else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(tab - 1) }
     else if (e.key === "Home") { e.preventDefault(); goTo(0) }
@@ -37,6 +41,7 @@ export default function ProductExperience() {
 
   const selectSub = (i: number) => {
     if (!current.subSteps?.[i]?.src) return
+    setUserPaused(true)
     setSub(i)
   }
 
@@ -50,8 +55,33 @@ export default function ProductExperience() {
     else if (e.key === "End") { e.preventDefault(); selectSub(subStepsWithScreens.length ? steps.indexOf(subStepsWithScreens[subStepsWithScreens.length - 1]) : 0) }
   }
 
+  // Gentle auto-advance through the tour. Pauses on hover/focus and stops
+  // permanently once the visitor takes control (click or arrow keys);
+  // disabled entirely under prefers-reduced-motion.
+  const autoAdvance = !hovering && !focused && !userPaused
+  useEffect(() => {
+    if (!autoAdvance) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const id = setTimeout(() => {
+      setTab((t) => {
+        const next = (t + 1) % FEATURE_TABS.length
+        setSub(Math.max(FEATURE_TABS[next].subSteps?.findIndex((s) => s.src) ?? 0, 0))
+        return next
+      })
+    }, 6500)
+    return () => clearTimeout(id)
+  }, [tab, autoAdvance])
+
   return (
-    <section id="product" className="relative py-24 sm:py-28 overflow-hidden scroll-mt-20" style={{ background: C.violetDeep }}>
+    <section
+      id="product"
+      className="relative py-24 sm:py-28 overflow-hidden scroll-mt-20"
+      style={{ background: C.violetDeep }}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false) }}
+    >
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: `radial-gradient(800px 500px at 50% 0%, rgba(91,15,193,0.6), transparent 65%), radial-gradient(700px 400px at 100% 100%, rgba(196,24,147,0.25), transparent 65%)` }}
@@ -77,7 +107,7 @@ export default function ProductExperience() {
                 aria-selected={selected}
                 aria-controls={`cx2-panel-${t.key}`}
                 tabIndex={selected ? 0 : -1}
-                onClick={() => { setTab(i); setSub(firstScreenSub(i)) }}
+                onClick={() => { setUserPaused(true); setTab(i); setSub(firstScreenSub(i)) }}
                 className="whitespace-nowrap rounded-full px-5 py-2.5 text-[14px] font-semibold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 style={
                   selected
@@ -91,6 +121,64 @@ export default function ProductExperience() {
           })}
         </div>
 
+        {/* Clinical workflow stepper — visible only on the Clinical Care tab.
+            The whole six-step workflow reads at a glance; steps with a real
+            screen are interactive, the rest stay visible but dimmed. */}
+        {current.subSteps && (
+          <div
+            role="tablist"
+            aria-label="Clinical care steps"
+            onKeyDown={onSubKeyDown}
+            className="mt-10 -mx-5 px-5 sm:mx-0 sm:px-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            <div className="relative min-w-[620px] pb-1">
+              <div className="absolute top-[15px] left-[8%] right-[8%] h-px" style={{ background: "rgba(255,255,255,0.14)" }} aria-hidden="true">
+                <div
+                  className="h-full"
+                  style={{
+                    background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`,
+                    width: `${(sub / (current.subSteps.length - 1)) * 100}%`,
+                    transition: "width 0.45s cubic-bezier(0.22,1,0.36,1)",
+                  }}
+                />
+              </div>
+              <div className="relative grid grid-cols-6">
+                {current.subSteps.map((s, i) => {
+                  const hasScreen = Boolean(s.src)
+                  const selected = hasScreen && i === sub
+                  return (
+                    <button
+                      key={s.key}
+                      role="tab"
+                      aria-selected={selected}
+                      aria-disabled={!hasScreen}
+                      tabIndex={selected ? 0 : -1}
+                      onClick={() => selectSub(i)}
+                      disabled={!hasScreen}
+                      title={hasScreen ? undefined : "Shown in the clinical workflow — screenshot coming soon"}
+                      className={`flex flex-col items-center gap-3 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-lg py-1 ${hasScreen ? "cursor-pointer" : "cursor-default"}`}
+                    >
+                      <span
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold transition-all duration-200 ${hasScreen ? "" : "opacity-55"}`}
+                        style={
+                          selected
+                            ? { background: C.white, color: C.violetDeep, boxShadow: "0 8px 22px -8px rgba(255,255,255,0.55)" }
+                            : { background: "rgba(255,255,255,0.08)", color: C.lavenderTint, border: hasScreen ? "1px solid rgba(255,255,255,0.16)" : "1px dashed rgba(255,255,255,0.28)" }
+                        }
+                      >
+                        {i + 1}
+                      </span>
+                      <span className={`text-[11.5px] font-semibold leading-none ${hasScreen ? "" : "opacity-55"}`} style={{ color: selected ? C.white : C.lilac }}>
+                        {s.label}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Panel */}
         <div
           role="tabpanel"
@@ -99,9 +187,17 @@ export default function ProductExperience() {
           className="mt-8 grid lg:grid-cols-12 gap-8 lg:gap-10 items-center"
         >
           <div className="lg:col-span-4 min-w-0">
-            <p className="text-[11px] font-bold tracking-[0.16em] uppercase" style={{ color: C.magenta }}>
-              {String(tab + 1).padStart(2, "0")} — {current.label}
-            </p>
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <p className="text-[11px] font-bold tracking-[0.16em] uppercase" style={{ color: C.magenta }}>
+                {String(tab + 1).padStart(2, "0")} — {current.label}
+              </p>
+              <span
+                className="text-[10px] font-bold tracking-[0.12em] uppercase rounded-full px-2.5 py-1"
+                style={{ background: "rgba(255,255,255,0.08)", color: C.lavenderTint, border: "1px solid rgba(255,255,255,0.14)" }}
+              >
+                {current.role}
+              </span>
+            </div>
             <h3 className="mt-3 text-[1.7rem] sm:text-[2rem] leading-[1.15] font-bold text-white" style={HEADING}>
               {current.headline}
             </h3>
@@ -121,34 +217,6 @@ export default function ProductExperience() {
               ))}
             </ul>
 
-            {current.subSteps && (
-              <div className="mt-7 flex flex-wrap gap-2" role="tablist" aria-label="Clinical care steps" onKeyDown={onSubKeyDown}>
-                {current.subSteps.map((s, i) => {
-                  const hasScreen = Boolean(s.src)
-                  const selected = hasScreen && i === sub
-                  return (
-                    <button
-                      key={s.key}
-                      role="tab"
-                      aria-selected={selected}
-                      aria-disabled={!hasScreen}
-                      tabIndex={selected ? 0 : -1}
-                      onClick={() => selectSub(i)}
-                      disabled={!hasScreen}
-                      title={hasScreen ? undefined : "Shown in the clinical workflow — screenshot coming soon"}
-                      className={`rounded-full px-3.5 py-1.5 text-[12.5px] font-semibold transition-colors ${hasScreen ? "cursor-pointer" : "cursor-default opacity-60"}`}
-                      style={
-                        selected
-                          ? { background: C.white, color: C.violetDeep }
-                          : { background: "rgba(255,255,255,0.08)", color: C.lavenderTint, border: hasScreen ? "1px solid rgba(255,255,255,0.14)" : "1px dashed rgba(255,255,255,0.25)" }
-                      }
-                    >
-                      {i + 1}. {s.label}
-                    </button>
-                  )
-                })}
-              </div>
-            )}
           </div>
 
           <div className="lg:col-span-8 min-w-0">

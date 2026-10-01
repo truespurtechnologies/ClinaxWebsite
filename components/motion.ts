@@ -32,7 +32,9 @@ export function riseStyle(active: boolean, delay = 0, distance = 14): CSSPropert
   return {
     opacity: active ? 1 : 0,
     transform: active ? "translate(0,0)" : `translate(0,${distance}px)`,
-    transition: `opacity 0.6s ease-out ${delay}s, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+    // translate/box-shadow are listed so CARD_HOVER hover effects animate
+    // smoothly even though this inline transition overrides class transitions.
+    transition: `opacity 0.6s ease-out ${delay}s, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}s, translate 0.25s ease-out, box-shadow 0.25s ease-out`,
   }
 }
 

@@ -59,18 +59,18 @@ export function ProductFrame({
 function CapabilityMarquee() {
   const items = [...CAPABILITIES, ...CAPABILITIES]
   return (
-    <div className="relative mt-14 overflow-hidden" aria-hidden="true">
-      <div className="absolute inset-y-0 left-0 w-24 z-10" style={{ background: `linear-gradient(90deg, ${C.violetDeep}, transparent)` }} />
-      <div className="absolute inset-y-0 right-0 w-24 z-10" style={{ background: `linear-gradient(270deg, ${C.violetDeep}, transparent)` }} />
+    <div
+      className="relative overflow-hidden py-4"
+      style={{ background: C.white, borderTop: `1px solid ${C.lavender}`, borderBottom: `1px solid ${C.lavender}` }}
+      aria-hidden="true"
+    >
+      <div className="absolute inset-y-0 left-0 w-24 z-10" style={{ background: `linear-gradient(90deg, ${C.white}, transparent)` }} />
+      <div className="absolute inset-y-0 right-0 w-24 z-10" style={{ background: `linear-gradient(270deg, ${C.white}, transparent)` }} />
       <div className="flex gap-3 w-max cx2-marquee">
         {items.map((c, i) => (
-          <span
-            key={i}
-            className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold whitespace-nowrap"
-            style={{ background: "rgba(255,255,255,0.13)", border: "1px solid rgba(255,255,255,0.22)", color: "rgba(255,255,255,0.92)" }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.magenta }} />
+          <span key={i} className="inline-flex items-center gap-3 text-[13px] font-semibold whitespace-nowrap" style={{ color: C.muted }}>
             {c}
+            <span className="text-[13px] leading-none" style={{ color: C.magenta }} aria-hidden="true">✦</span>
           </span>
         ))}
       </div>
@@ -97,7 +97,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 pt-16 pb-20 sm:pt-24">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-8 pt-16 pb-16 sm:pt-24">
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
           <span
             className="relative inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 rounded-full px-4 py-2 overflow-hidden backdrop-blur-sm text-[11px] font-bold tracking-[0.14em] uppercase"
@@ -169,9 +169,9 @@ export default function Hero() {
             Demonstration data · fictional clinic
           </p>
         </div>
-
-        <CapabilityMarquee />
       </div>
+
+      <CapabilityMarquee />
 
       <style>{`
         @keyframes cx2Marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

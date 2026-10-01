@@ -110,7 +110,7 @@ export default function DemoForm() {
           Request early access
         </h3>
         <p className="mt-1 text-[14px]" style={{ color: C.muted }}>
-          Tell us a little about your clinic. We&apos;ll get back to you to arrange a walkthrough.
+          Tell us about your clinic — we&apos;ll take it from here.
         </p>
       </div>
 

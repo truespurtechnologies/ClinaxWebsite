@@ -44,70 +44,80 @@ export const CAPABILITIES = [
   "Multi-Specialty Ready",
 ]
 
-// Qualitative, illustrative symptoms of a fragmented clinic. Deliberately not
-// quantified — see docs/Clinax Product build brief: "Product Accuracy
-// Principle" and the plan's credibility guardrails.
+// Qualitative, illustrative symptoms of a fragmented clinic — framed as
+// consequences, not tool names (the concrete tool inventory lives in
+// BeforeAfter). Deliberately not quantified — see docs/Clinax Product build
+// brief: "Product Accuracy Principle" and the plan's credibility guardrails.
 export const PAIN_POINTS = [
-  { title: "WhatsApp groups", text: "One per branch, per team, per therapist — and the patient update is always in the other one." },
-  { title: "Spreadsheets", text: "Appointments, follow-ups, therapist rosters and collections tracked by hand, out of sync by lunchtime." },
-  { title: "Paper records", text: "A patient's history split across a paper file, a therapist's memory and someone's notebook." },
-  { title: "Manual coordination", text: "Reception, therapists and management stay aligned only because someone spends the day chasing everyone else." },
+  { title: "Follow-ups that fall through", text: "The patient due a call-back is remembered at 9pm — or not at all." },
+  { title: "The same details, typed twice", text: "Reception re-enters what the therapist already wrote down — and the two versions quietly drift apart." },
+  { title: "Sessions without context", text: "Treatment starts from whatever the therapist remembers, not the patient's full history." },
+  { title: "Owners find out late", text: "Branch problems surface in a call or a month-end review — never in time to act on them." },
 ]
 
+// The concrete tools the work is actually scattered across — named artifacts
+// land harder than abstract statements. Icon keys map to the tile glyphs in
+// BeforeAfter.tsx.
 export const BEFORE_ITEMS = [
-  "Different tools manage different tasks.",
-  "People are responsible for connecting information.",
-  "Updates are shared manually, if at all.",
-  "Therapists treat without the full patient context.",
-  "Leadership finds out about problems after the fact.",
+  { icon: "sheet", title: "Appointments in a spreadsheet" },
+  { icon: "chat", title: "Patient updates in WhatsApp" },
+  { icon: "file", title: "Notes in paper files" },
+  { icon: "report", title: "Reports pieced together by hand" },
 ]
 
-export const AFTER_ITEMS = [
-  "One patient record from enquiry to every follow-up.",
-  "Reception, therapists and leaders share the same context.",
-  "Schedules, notes and progress update in real time.",
-  "Structured documentation across every therapist and session.",
-  "Branch dashboards show what is happening — today.",
+export const BEFORE_FOOT = "Disconnected information creates more admin, missed context and harder handoffs."
+
+export const AFTER_PIPELINE = [
+  { verb: "Book", text: "Appointment & intake" },
+  { verb: "Treat", text: "Visits & care plans" },
+  { verb: "Track", text: "Progress & follow-up" },
+  { verb: "Grow", text: "Insights across branches" },
 ]
+
+export const AFTER_FOOT = "Everyone works from a more complete picture of the patient journey."
 
 // The four capability areas shown in the Platform section. Each is backed by
 // what the product screenshots actually demonstrate (front desk, schedule,
-// therapist/visit workflow, management dashboard).
+// therapist/visit workflow, management dashboard). `detail` is the compact
+// line inside the HubDiagram spoke box, `value` is the hover tooltip / card
+// tagline, and `bullets` only render in the mobile fallback cards.
 export const PLATFORM_AREAS = [
   {
     label: "Patient Operations",
+    detail: "Registration & scheduling",
     value: "Registration, scheduling and check-in in one flow.",
     bullets: ["Patient registration & search", "Appointment booking across branches", "Front-desk check-in and waiting queue"],
   },
   {
     label: "Clinical Care",
+    detail: "Assessment to progress",
     value: "A structured workflow for every session.",
     bullets: ["Assessment and treatment documentation", "Goals, progress and home exercise plans", "Patient history at the point of care"],
   },
   {
     label: "Clinic Operations",
+    detail: "Teams & branches",
     value: "Teams and branches working from shared context.",
     bullets: ["Role-based access for reception, therapists & leadership", "Therapist rosters and utilisation", "Branch-aware views as you grow"],
   },
   {
     label: "Management & Insights",
+    detail: "Dashboards & follow-ups",
     value: "Visibility without exporting to Excel.",
     bullets: ["Appointments, collections and utilisation dashboards", "Follow-up and drop-off tracking", "Clinical reviews awaiting a decision"],
   },
 ]
 
-// Kept for the HubDiagram — same four areas, compact labels for the SVG.
-export const HUB_SPOKES = [
-  { label: "Patient Operations", detail: "Registration & scheduling" },
-  { label: "Clinical Care", detail: "Assessment to progress" },
-  { label: "Clinic Operations", detail: "Teams & branches" },
-  { label: "Management & Insights", detail: "Dashboards & follow-ups" },
-]
+export const TRUST_INTRO =
+  "Clinical information is sensitive. Clinax is designed with the access, visibility and data protection considerations that modern clinics need."
 
-// Trust/security strip. Confirmed current product capabilities only.
+// Trust/security strip. Confirmed current product capabilities only. The
+// HIPAA/DPDP phrasing stays non-certifying (no "compliant"/"certified" claims)
+// — flag in the legal-review pass alongside legal.ts.
 export const TRUST_ITEMS = [
-  { title: "Encrypted records", text: "Patient data is encrypted in transit and at rest." },
-  { title: "Role-based access", text: "Staff see only what their work requires — nothing more." },
+  { title: "Privacy-minded by design", text: "Built with HIPAA and India's DPDP data protection expectations in mind — discuss your clinic's requirements with our team." },
+  { title: "Encrypted patient records", text: "Patient information is protected with encryption in transit and at rest." },
+  { title: "Role-based, multi-branch access", text: "Give each team member relevant access while keeping oversight across locations." },
   { title: "Backed up daily", text: "Automatic backups keep your clinic's data recoverable." },
   { title: "Your data stays yours", text: "Full export anytime. No lock-in." },
 ]
@@ -115,6 +125,7 @@ export const TRUST_ITEMS = [
 export interface FeatureTab {
   key: string
   label: string
+  role: string
   headline: string
   description: string
   bullets: string[]
@@ -126,6 +137,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     key: "front-desk",
     label: "Front Desk",
+    role: "Reception",
     headline: "Start every day with the whole clinic in view.",
     description: "Reception sees arrivals, waiting patients, online sessions and follow-ups from one workspace — no register, no group chat.",
     bullets: ["Today's queue and arrivals at a glance", "Check-in and registration in one flow", "Follow-ups that never fall off the list", "Branch-aware view for multi-location clinics"],
@@ -134,6 +146,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     key: "scheduling",
     label: "Scheduling",
+    role: "All roles",
     headline: "Know where capacity is — before you book.",
     description: "Therapist availability, appointment density and branch capacity in one connected schedule.",
     bullets: ["Provider-level availability", "Appointment density by hour and day", "Cross-branch view for multi-location clinics", "Reschedule without a phone tree"],
@@ -142,6 +155,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     key: "therapist",
     label: "Therapist",
+    role: "Therapists",
     headline: "Give therapists the context they need, when they need it.",
     description: "Previous progress, today's priorities and clinical history in the therapist's working day — at the point of care.",
     bullets: ["Today's patients with history attached", "Progress since the last session", "Priorities and pending documentation", "Works on the treatment floor, not just at a desk"],
@@ -150,6 +164,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     key: "clinical",
     label: "Clinical Care",
+    role: "Therapists",
     headline: "Move through the session without losing the thread.",
     description: "A structured six-step clinical workflow — review, assess, treat, document, plan and complete — that keeps documentation consistent across every therapist and every session.",
     bullets: ["Subjective and objective assessment notes", "Today's treatment log", "Goals, progress and home exercise plan", "Visit summary and next appointment"],
@@ -166,6 +181,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     key: "management",
     label: "Management",
+    role: "Leadership",
     headline: "See what is happening across your clinic.",
     description: "Appointments, collections, therapist utilisation, follow-ups, clinical activity and branch visibility for owners and managers — per branch and overall.",
     bullets: ["Appointments, completions and collections at a glance", "Therapist utilisation and capacity", "Follow-up and clinical-review visibility", "Branch-level reporting without exporting to Excel"],
@@ -217,24 +233,6 @@ export const INTELLIGENCE = {
   ],
   note: "The connected patient record these build on is live today. Each capability is introduced clinic by clinic, as it is ready.",
 }
-
-export const ROLES = [
-  {
-    title: "Reception & Front Desk",
-    summary: "The day, organised.",
-    tasks: ["See today's arrivals, queue and follow-ups in one view", "Register, check in and reschedule without a phone tree", "Confirm and track follow-ups that used to fall through"],
-  },
-  {
-    title: "Therapists & Clinical Staff",
-    summary: "Context at the point of care.",
-    tasks: ["Open a session with the patient's full history attached", "Document assessments, treatment and plans as you go", "See today's priorities instead of a paper pile"],
-  },
-  {
-    title: "Clinic Leadership",
-    summary: "Visibility across branches.",
-    tasks: ["See appointments, collections and utilisation by branch", "Control who can access which branches and records", "Decide on connected information, not fragments"],
-  },
-]
 
 export const STEPS = [
   { n: "01", title: "Discover & Align", text: "We confirm your priority workflows, branches and roles — starting with what matters most." },
@@ -322,6 +320,8 @@ export const FINAL_CTA = {
   headline: "Stop running your clinic from group chats.",
   sub: "Clinax is live and onboarding its first clinics. Tell us about yours — we'll walk you through the platform with your workflows in mind.",
   bullets: ["Personalised walkthrough with your workflows", "No commitment, no credit card", "We'll get back to you promptly"],
+  // Unattributed positioning line, not a testimonial.
+  quote: "From the front desk to the treatment room — everything in one place.",
 }
 
 export const FOOTER_LINKS = [
