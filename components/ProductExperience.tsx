@@ -1,13 +1,24 @@
 "use client"
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react"
-import Image from "next/image"
+import { useEffect, useRef, useState, type ComponentType, type KeyboardEvent } from "react"
 import { C, GRADIENT, HEADING } from "./theme"
-import { CTA, FEATURE_TABS } from "./content"
+import { CTA, FEATURE_TABS, type FeatureTab } from "./content"
 import { SectionHeading, PrimaryButton, GhostButton } from "./ui"
 import ClinicalShowcase from "./ClinicalShowcase"
+import { FrontDeskShowcase, ManagementShowcase, ScheduleShowcase, TherapistShowcase } from "./ModuleShowcases"
+import type { ShowcaseProps } from "./showcase-ui"
 
 // ─── Tabbed feature explorer — the primary product proof ────────────────────
+
+// Every tab renders a coded showcase mockup (a marketing-safe, simplified
+// product visualisation — never a raw application screenshot).
+const SHOWCASES: Record<FeatureTab["showcase"], ComponentType<ShowcaseProps>> = {
+  "front-desk": FrontDeskShowcase,
+  schedule: ScheduleShowcase,
+  therapist: TherapistShowcase,
+  "clinical-session": ClinicalShowcase,
+  management: ManagementShowcase,
+}
 
 // Guided-tour pacing: Clinical Care sub-step screens cycle like chapters.
 // The tour never switches tabs on its own.
@@ -15,24 +26,19 @@ const SUB_STEP_MS = 4200
 
 export default function ProductExperience() {
   const [tab, setTab] = useState(0)
-  const [sub, setSub] = useState(() => Math.max(FEATURE_TABS[0].subSteps?.findIndex((s) => s.src) ?? 0, 0))
+  const [sub, setSub] = useState(0)
   const [hovering, setHovering] = useState(false)
   const [focused, setFocused] = useState(false)
   const [userPaused, setUserPaused] = useState(false)
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
   const current = FEATURE_TABS[tab]
-  const subStepsWithScreens = current.subSteps?.filter((s) => s.src) ?? []
   const activeSubStep = current.subSteps?.[sub]
-  const screen = activeSubStep?.src
-    ? { src: activeSubStep.src, alt: activeSubStep.alt ?? current.screen?.alt ?? "", width: activeSubStep.width ?? current.screen?.width ?? 1200, height: activeSubStep.height ?? current.screen?.height ?? 630 }
-    : current.screen
-
-  const firstScreenSub = (i: number) => Math.max(FEATURE_TABS[i].subSteps?.findIndex((s) => s.src) ?? 0, 0)
+  const Showcase = SHOWCASES[current.showcase]
 
   const goTo = (i: number) => {
     const next = (i + FEATURE_TABS.length) % FEATURE_TABS.length
     setTab(next)
-    setSub(firstScreenSub(next))
+    setSub(0)
     tabRefs.current[next]?.focus()
   }
 
@@ -44,12 +50,9 @@ export default function ProductExperience() {
     else if (e.key === "End") { e.preventDefault(); goTo(FEATURE_TABS.length - 1) }
   }
 
-  // A sub-step is interactive when it has a screenshot or the tab renders a
-  // coded showcase (Clinical Care), where every step is a rendered state.
-  const selectable = (i: number) => Boolean(current.subSteps?.[i]?.src) || Boolean(current.showcase)
-
+  // Every sub-step is a rendered showcase state, so all are interactive.
   const selectSub = (i: number) => {
-    if (!selectable(i)) return
+    if (!current.subSteps?.[i]) return
     setUserPaused(true)
     setSub(i)
   }
@@ -60,8 +63,8 @@ export default function ProductExperience() {
     const n = steps.length
     if (e.key === "ArrowRight") { e.preventDefault(); selectSub((sub + 1) % n) }
     else if (e.key === "ArrowLeft") { e.preventDefault(); selectSub((sub - 1 + n) % n) }
-    else if (e.key === "Home") { e.preventDefault(); selectSub(subStepsWithScreens.length ? steps.indexOf(subStepsWithScreens[0]) : 0) }
-    else if (e.key === "End") { e.preventDefault(); selectSub(subStepsWithScreens.length ? steps.indexOf(subStepsWithScreens[subStepsWithScreens.length - 1]) : 0) }
+    else if (e.key === "Home") { e.preventDefault(); selectSub(0) }
+    else if (e.key === "End") { e.preventDefault(); selectSub(n - 1) }
   }
 
   // Gentle auto-advance through the Clinical Care sub-steps only — the
@@ -74,9 +77,9 @@ export default function ProductExperience() {
     if (!autoAdvance) return
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
     if (window.matchMedia("(pointer: coarse)").matches) return
-    const nextScreenSub = current.subSteps?.findIndex((s, i) => i > sub && (s.src || current.showcase)) ?? -1
-    if (nextScreenSub < 0) return
-    const id = setTimeout(() => setSub(nextScreenSub), SUB_STEP_MS)
+    const nextSub = current.subSteps && sub + 1 < current.subSteps.length ? sub + 1 : -1
+    if (nextSub < 0) return
+    const id = setTimeout(() => setSub(nextSub), SUB_STEP_MS)
     return () => clearTimeout(id)
   }, [tab, sub, autoAdvance, current])
 
@@ -115,7 +118,7 @@ export default function ProductExperience() {
                 aria-selected={selected}
                 aria-controls={`cx2-panel-${t.key}`}
                 tabIndex={selected ? 0 : -1}
-                onClick={() => { setUserPaused(true); setTab(i); setSub(firstScreenSub(i)) }}
+                onClick={() => { setUserPaused(true); setTab(i); setSub(0) }}
                 className="whitespace-nowrap rounded-full px-5 py-2.5 text-[14px] font-semibold transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 style={
                   selected
@@ -131,8 +134,7 @@ export default function ProductExperience() {
 
         {/* Clinical workflow scrubber — visible only on the Clinical Care
             tab. Six chapter segments read at a glance; the active chapter
-            fills while the guided tour plays. Steps with a real screen are
-            interactive, the rest stay visible as outlined placeholders. */}
+            fills while the guided tour plays. */}
         {current.subSteps && (
           <div role="tablist" aria-label="Clinical care steps" onKeyDown={onSubKeyDown} className="mt-12">
             <div className="mb-4 flex items-baseline justify-end">
@@ -144,56 +146,46 @@ export default function ProductExperience() {
             </div>
             <div className="flex gap-1.5 sm:gap-2.5">
               {current.subSteps.map((s, i) => {
-                const hasScreen = selectable(i)
-                const selected = hasScreen && i === sub
-                const passed = hasScreen && i < sub
+                const selected = i === sub
+                const passed = i < sub
                 return (
                   <button
                     key={s.key}
                     role="tab"
                     aria-selected={selected}
-                    aria-disabled={!hasScreen}
                     tabIndex={selected ? 0 : -1}
                     onClick={() => selectSub(i)}
-                    disabled={!hasScreen}
-                    title={hasScreen ? undefined : "Shown in the clinical workflow — screenshot coming soon"}
-                    className={`cx2-chapter flex min-w-0 flex-1 flex-col items-start gap-2.5 rounded-md px-0.5 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${hasScreen ? "cursor-pointer" : "cursor-default"}`}
+                    className="cx2-chapter flex min-w-0 flex-1 flex-col items-start gap-2.5 rounded-md px-0.5 py-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                   >
                     <span
                       className="cx2-chapter-bar relative block h-[3px] w-full overflow-hidden rounded-full transition-colors duration-200"
-                      style={
-                        hasScreen
-                          ? { background: "rgba(255,255,255,0.12)" }
-                          : { background: "transparent", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.28)" }
-                      }
+                      style={{ background: "rgba(255,255,255,0.12)" }}
                     >
-                      {hasScreen && (
-                        <span
-                          key={selected ? `active-${sub}` : `idle-${i}`}
-                          className="absolute inset-y-0 left-0 rounded-full"
-                          style={
-                            selected
-                              ? {
-                                  width: "100%",
-                                  background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`,
-                                  boxShadow: "0 0 16px rgba(196,24,147,0.6)",
-                                  animationName: userPaused ? "none" : "cx2ChapterFill",
-                                  animationDuration: `${SUB_STEP_MS}ms`,
-                                  animationTimingFunction: "linear",
-                                  animationFillMode: "forwards",
-                                  animationPlayState: autoAdvance ? "running" : "paused",
-                                }
-                              : {
-                                  width: passed ? "100%" : "0%",
-                                  background: "rgba(231,217,247,0.4)",
-                                  transition: "width 0.35s ease",
-                                }
-                          }
-                        />
-                      )}
+                      <span
+                        key={selected ? `active-${sub}` : `idle-${i}`}
+                        className="absolute inset-y-0 left-0 rounded-full"
+                        style={
+                          selected
+                            ? {
+                                width: "100%",
+                                background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`,
+                                boxShadow: "0 0 16px rgba(196,24,147,0.6)",
+                                animationName: userPaused ? "none" : "cx2ChapterFill",
+                                animationDuration: `${SUB_STEP_MS}ms`,
+                                animationTimingFunction: "linear",
+                                animationFillMode: "forwards",
+                                animationPlayState: autoAdvance ? "running" : "paused",
+                              }
+                            : {
+                                width: passed ? "100%" : "0%",
+                                background: "rgba(231,217,247,0.4)",
+                                transition: "width 0.35s ease",
+                              }
+                        }
+                      />
                     </span>
                     <span
-                      className={`cx2-chapter-label text-[9.5px] sm:text-[11px] font-semibold uppercase leading-tight tracking-[0.06em] sm:tracking-[0.1em] transition-colors duration-200 ${hasScreen ? "" : "opacity-45"}`}
+                      className="cx2-chapter-label text-[9.5px] sm:text-[11px] font-semibold uppercase leading-tight tracking-[0.06em] sm:tracking-[0.1em] transition-colors duration-200"
                       style={{ color: selected ? C.white : C.lilac }}
                     >
                       {s.label}
@@ -255,20 +247,8 @@ export default function ProductExperience() {
                   Clinax · {current.label}{activeSubStep ? ` · ${activeSubStep.label}` : ""}
                 </span>
               </div>
-              <div>
-                {current.showcase === "clinical-session" ? (
-                  <ClinicalShowcase steps={current.subSteps ?? []} active={sub} />
-                ) : screen ? (
-                  <Image
-                    key={screen.src}
-                    src={screen.src}
-                    alt={screen.alt}
-                    width={screen.width}
-                    height={screen.height}
-                    sizes="(min-width: 1024px) 60vw, 92vw"
-                    className="w-full h-auto block cx2-fade-in"
-                  />
-                ) : null}
+              <div key={current.key} className="cx2-fade-in">
+                <Showcase steps={current.subSteps} active={sub} />
               </div>
               <div className="px-4 py-2 border-t" style={{ background: C.surface, borderColor: C.lavender }}>
                 <p className="text-[10.5px] font-medium tracking-wide" style={{ color: C.muted }}>

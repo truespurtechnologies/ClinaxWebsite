@@ -24,13 +24,15 @@ for the same form. Keep button labels Title Case, form/heading copy sentence cas
   email addresses in components.
 - `/api/demo` requires `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`, `FROM_EMAIL`, `TO_EMAIL` env vars. Without
   them it returns a 500 with "Email service is not configured" - that is expected locally.
-- `assets/raw/` holds Physiora-branded source screenshots. Never move them into `public/`. Regenerate the
-  redacted `public/images/*.png` with `scripts/blur-screenshots.mjs` (needs `sharp` installed ad hoc) —
-  it flat-fills Physiora-specific regions rather than blurring them.
-- The Clinical Care tab in `ProductExperience` renders `components/ClinicalShowcase.tsx` — a deliberately
-  simplified coded mockup (marketing showcase, not real app screens). Keep it that way: no raw visit
-  screenshots for the six-step workflow; fictional demo data only, no field-level schema, IDs or internal
-  mechanics. `raw/Visit N.png` sources stay unexported.
+- `assets/raw/` holds Physiora-branded source screenshots — an archive only; never move them into
+  `public/` or serve them.
+- All product visuals are coded showcase mockups — `components/showcase-ui.tsx` (shared primitives),
+  `components/ModuleShowcases.tsx` (Front Desk, Scheduling, Therapist Desk, Management) and
+  `components/ClinicalShowcase.tsx` (the six-step session walkthrough in `ProductExperience`); the hero
+  renders `ManagementShowcase` inside `ProductFrame`. These are deliberately simplified demo UIs, never
+  raw application screens: one consistent fictional clinic cast (Priya Raman, Kavitha Raj, Arun Kumar,
+  Lakshmi Subramanian; Dr. Ramya/Vikram/Sanjay), coherent numbers across screens, no sidebar IA, role
+  badges, identifiers, field-level schema or internal mechanics.
 - `assets/Logo/` holds brand source files; `assets/Logo/svg/` holds the SVG masters (vectorised from the
   approved raster by `scripts/trace_logo.py`, needs `pip install vtracer pillow`). Derivatives
   (`public/logo/*.svg|png|webp`, `app/icon.png`, `app/apple-icon.png`) come from `scripts/build-logo.mjs`

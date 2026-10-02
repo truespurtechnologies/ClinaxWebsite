@@ -1,9 +1,10 @@
 "use client"
 
-import Image from "next/image"
+import type { ReactNode } from "react"
 import { C, HEADING } from "./theme"
 import { CAPABILITIES, HERO } from "./content"
 import { PrimaryButton, GhostButton } from "./ui"
+import { ManagementShowcase } from "./ModuleShowcases"
 
 function CheckDot() {
   return (
@@ -15,21 +16,13 @@ function CheckDot() {
 }
 
 export function ProductFrame({
-  src,
-  alt,
-  width,
-  height,
   label,
-  priority = false,
   className = "",
+  children,
 }: {
-  src: string
-  alt: string
-  width: number
-  height: number
   label: string
-  priority?: boolean
   className?: string
+  children: ReactNode
 }) {
   return (
     <div className={`rounded-2xl overflow-hidden bg-white ${className}`} style={{ border: `1px solid ${C.lavender}` }}>
@@ -41,15 +34,7 @@ export function ProductFrame({
           Clinax · {label}
         </span>
       </div>
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        priority={priority}
-        sizes="(min-width: 1280px) 1100px, (min-width: 640px) 92vw, 640px"
-        className="w-full h-auto block"
-      />
+      {children}
     </div>
   )
 }
@@ -148,15 +133,9 @@ export default function Hero() {
             className="absolute -inset-x-10 -top-10 h-40 pointer-events-none blur-3xl opacity-70"
             style={{ background: `linear-gradient(90deg, ${C.magenta}, ${C.violet})` }}
           />
-          <ProductFrame
-            src="/images/management-dashboard.png"
-            alt="Clinax management dashboard showing appointments, revenue, therapist utilisation and follow-ups across branches"
-            width={1492}
-            height={682}
-            label="Management Dashboard"
-            priority
-            className="relative shadow-[0_40px_90px_-30px_rgba(0,0,0,0.6)]"
-          />
+          <ProductFrame label="Management Dashboard" className="relative shadow-[0_40px_90px_-30px_rgba(0,0,0,0.6)]">
+            <ManagementShowcase />
+          </ProductFrame>
           <p className="mt-3 text-center text-[11px] font-medium tracking-wide" style={{ color: C.lilac }}>
             Demonstration data · fictional clinic
           </p>

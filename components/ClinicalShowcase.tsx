@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
-import { C, GRADIENT } from "./theme"
+import { C } from "./theme"
+import { ACTIVE, Card, Chip, DONE, Line, Note, PainBar, Progress, ScreenHeader, ShowcaseShell, Tick } from "./showcase-ui"
 
 // Marketing showcase of the Clinax clinical-session workflow — an
 // intentionally simplified demonstration UI, not the application itself.
@@ -8,90 +9,6 @@ import { C, GRADIENT } from "./theme"
 // One fictional patient story runs through all six steps; the header,
 // context strip and stepper stay fixed while only the body changes, so
 // the walkthrough reads as one continuous session.
-
-const DONE = { bg: "#E9F6EE", text: "#1E7A46", border: "#C7E5D2" }
-const ACTIVE = { bg: "#F3EDFC", border: "rgba(91,15,193,0.45)" }
-
-function Tick({ size = 10 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 10 10" fill="none" aria-hidden="true" className="shrink-0">
-      <circle cx="5" cy="5" r="4.5" fill={DONE.text} />
-      <path d="M3 5.2l1.4 1.4L7 3.8" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function Card({ title, sub, aside, children }: { title: string; sub: string; aside?: ReactNode; children: ReactNode }) {
-  return (
-    <div className="rounded-xl border bg-white p-4 sm:p-5" style={{ borderColor: C.lavender }}>
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-[13px] font-bold" style={{ color: C.ink }}>{title}</p>
-          <p className="text-[11px]" style={{ color: C.muted }}>{sub}</p>
-        </div>
-        {aside}
-      </div>
-      <div className="mt-3">{children}</div>
-    </div>
-  )
-}
-
-function Line({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-4 border-b py-2.5 last:border-0 last:pb-0 first:pt-0" style={{ borderColor: C.lavender }}>
-      <span className="text-[11.5px]" style={{ color: C.muted }}>{k}</span>
-      <span className="text-[12px] font-semibold text-right" style={{ color: C.ink }}>{v}</span>
-    </div>
-  )
-}
-
-function Note({ children }: { children: ReactNode }) {
-  return (
-    <p className="text-[12px] leading-[1.6] border-b py-2.5 last:border-0 last:pb-0 first:pt-0" style={{ color: C.ink, borderColor: C.lavender }}>
-      {children}
-    </p>
-  )
-}
-
-function ContextChip({ children, warm }: { children: ReactNode; warm?: boolean }) {
-  return (
-    <span
-      className="rounded-md px-2 py-1 text-[10.5px] font-semibold whitespace-nowrap"
-      style={warm ? { background: C.peach, color: C.brown } : { background: C.surface, color: C.muted, border: `1px solid ${C.lavender}` }}
-    >
-      {children}
-    </span>
-  )
-}
-
-function PainBar({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="pt-1">
-      <div className="flex items-baseline justify-between">
-        <span className="text-[10px] font-bold tracking-[0.1em] uppercase" style={{ color: C.muted }}>{label}</span>
-        <span className="rounded-md px-1.5 py-0.5 text-[10.5px] font-bold" style={{ background: C.peach, color: C.brown }}>{value}/10</span>
-      </div>
-      <div className="relative mt-2 h-[5px] rounded-full" style={{ background: C.lavender }}>
-        <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${value * 10}%`, background: GRADIENT }} />
-        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-white" style={{ left: `${value * 10}%`, border: `2px solid ${C.violet}` }} />
-      </div>
-    </div>
-  )
-}
-
-function Progress({ label, done, total }: { label: string; done: number; total: number }) {
-  return (
-    <div className="border-b py-2.5" style={{ borderColor: C.lavender }}>
-      <div className="flex items-baseline justify-between gap-4">
-        <span className="text-[11.5px]" style={{ color: C.muted }}>{label}</span>
-        <span className="text-[12px] font-semibold" style={{ color: C.ink }}>{done} of {total} sessions</span>
-      </div>
-      <div className="mt-2 h-[5px] rounded-full" style={{ background: C.lavender }}>
-        <div className="h-full rounded-full" style={{ width: `${(done / total) * 100}%`, background: GRADIENT }} />
-      </div>
-    </div>
-  )
-}
 
 const BODY: Record<string, ReactNode> = {
   review: (
@@ -128,12 +45,7 @@ const BODY: Record<string, ReactNode> = {
             <p className="text-[12.5px] font-semibold" style={{ color: C.ink }}>{t.name}</p>
             <p className="text-[11px]" style={{ color: C.muted }}>{t.dur}</p>
           </div>
-          <span
-            className="rounded-full px-2.5 py-1 text-[10px] font-bold whitespace-nowrap"
-            style={t.ok ? { background: DONE.bg, color: DONE.text } : { background: C.peach, color: C.brown }}
-          >
-            {t.tag}
-          </span>
+          <Chip tone={t.ok ? "done" : "warm"}>{t.tag}</Chip>
         </div>
       ))}
     </Card>
@@ -142,11 +54,7 @@ const BODY: Record<string, ReactNode> = {
     <Card
       title="Session note"
       sub="Drafted from today's visit"
-      aside={
-        <span className="rounded-full px-2.5 py-1 text-[10px] font-bold whitespace-nowrap" style={{ background: C.lavenderTint, color: C.violet }}>
-          ✦ AI-assisted draft
-        </span>
-      }
+      aside={<Chip tone="violet">✦ AI-assisted draft</Chip>}
     >
       {[
         { k: "S", text: "Less knee pain than last visit; stairs remain the main limitation." },
@@ -178,7 +86,7 @@ const BODY: Record<string, ReactNode> = {
           <div key={e.name} className="border-b py-2.5 last:border-0 last:pb-0 first:pt-0" style={{ borderColor: C.lavender }}>
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[12.5px] font-semibold" style={{ color: C.ink }}>{e.name}</p>
-              <span className="rounded-md px-1.5 py-0.5 text-[10px] font-bold whitespace-nowrap" style={{ background: C.lavenderTint, color: C.violet }}>{e.dose}</span>
+              <Chip tone="violet">{e.dose}</Chip>
             </div>
             <p className="mt-0.5 text-[11.5px]" style={{ color: C.muted }}>{e.note}</p>
           </div>
@@ -204,79 +112,70 @@ const BODY: Record<string, ReactNode> = {
   ),
 }
 
-export default function ClinicalShowcase({ steps, active }: { steps: { key: string; label: string }[]; active: number }) {
+export default function ClinicalShowcase({ steps = [], active = 0 }: { steps?: { key: string; label: string }[]; active?: number }) {
   const step = steps[active]
   return (
-    <div
-      role="img"
-      aria-label={`Clinax therapy session — ${step?.label ?? ""} step of a guided six-step visit workflow`}
-      className="px-3.5 py-4 sm:px-6 sm:py-6"
-      style={{ background: "#FBFAFE" }}
-    >
-      <div aria-hidden="true">
-        {/* Session header — one fictional patient story across all steps */}
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <span className="text-[15px] sm:text-[17px] font-bold" style={{ color: C.ink }}>Priya Raman</span>
-          <span className="rounded-full px-2.5 py-0.5 text-[10px] font-bold tracking-wide" style={{ background: C.lavenderTint, color: C.violet }}>
-            Therapy Session
-          </span>
-          <span className="ml-auto text-[11px] font-medium" style={{ color: C.muted }}>Visit 8 of 18</span>
-        </div>
-        <p className="mt-0.5 text-[11.5px] sm:text-[12px]" style={{ color: C.muted }}>Post-operative knee rehabilitation</p>
+    <ShowcaseShell label={`Clinax therapy session — ${step?.label ?? ""} step of a guided six-step visit workflow`}>
+      {/* Session header — one fictional patient story across all steps */}
+      <ScreenHeader
+        title="Priya Raman"
+        sub="Post-operative knee rehabilitation"
+        meta="Visit 8 of 18"
+        chips={<Chip tone="violet">Therapy Session</Chip>}
+      />
 
-        {/* Carried context — the "without losing the thread" hook */}
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          <ContextChip warm>Pain 4/10</ContextChip>
-          <ContextChip>Last visit — improving</ContextChip>
-          <ContextChip>Goal — independent stair descent</ContextChip>
-        </div>
+      {/* Carried context — the "without losing the thread" hook */}
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        <Chip tone="warm">Pain 4/10</Chip>
+        <Chip>Last visit — improving</Chip>
+        <Chip>Goal — independent stair descent</Chip>
+      </div>
 
-        {/* Six-step workflow — the positioning element */}
-        <div className="mt-4 grid grid-cols-6 gap-1 sm:gap-2">
-          {steps.map((s, i) => {
-            const state = i < active ? "done" : i === active ? "active" : "todo"
-            return (
-              <div
-                key={s.key}
-                className="rounded-lg px-1.5 py-1.5 sm:px-2.5 sm:py-2 min-w-0 border"
-                style={
-                  state === "done"
-                    ? { background: DONE.bg, borderColor: DONE.border }
-                    : state === "active"
-                      ? { background: ACTIVE.bg, borderColor: ACTIVE.border, boxShadow: "0 4px 14px -6px rgba(91,15,193,0.35)" }
-                      : { background: C.white, borderColor: C.lavender }
-                }
-              >
-                <div className="flex items-center gap-1">
-                  {state === "done" && <Tick size={9} />}
-                  <span
-                    className="text-[8px] sm:text-[9px] font-bold tracking-[0.08em] uppercase"
-                    style={{ color: state === "done" ? DONE.text : state === "active" ? C.violet : C.muted }}
-                  >
-                    Step {i + 1}
-                  </span>
-                </div>
+      {/* Six-step workflow — the positioning element */}
+      <div className="mt-4 grid grid-cols-6 gap-1 sm:gap-2">
+        {steps.map((s, i) => {
+          const state = i < active ? "done" : i === active ? "active" : "todo"
+          return (
+            <div
+              key={s.key}
+              className="rounded-lg px-1.5 py-1.5 sm:px-2.5 sm:py-2 min-w-0 border"
+              style={
+                state === "done"
+                  ? { background: DONE.bg, borderColor: DONE.border }
+                  : state === "active"
+                    ? { background: ACTIVE.bg, borderColor: ACTIVE.border, boxShadow: "0 4px 14px -6px rgba(91,15,193,0.35)" }
+                    : { background: C.white, borderColor: C.lavender }
+              }
+            >
+              <div className="flex items-center gap-1">
+                {state === "done" && <Tick size={9} />}
                 <span
-                  className="mt-0.5 block truncate text-[10px] sm:text-[12px] font-semibold leading-tight"
-                  style={{ color: state === "todo" ? C.muted : C.ink }}
+                  className="text-[8px] sm:text-[9px] font-bold tracking-[0.08em] uppercase"
+                  style={{ color: state === "done" ? DONE.text : state === "active" ? C.violet : C.muted }}
                 >
-                  {s.label}
+                  Step {i + 1}
                 </span>
               </div>
-            )
-          })}
-        </div>
+              <span
+                className="mt-0.5 block truncate text-[10px] sm:text-[12px] font-semibold leading-tight"
+                style={{ color: state === "todo" ? C.muted : C.ink }}
+              >
+                {s.label}
+              </span>
+            </div>
+          )
+        })}
+      </div>
 
-        {/* Step body — swaps per chapter while the shell stays put */}
-        <div key={step?.key} className="cs-step mt-3 sm:mt-4 min-h-[220px] sm:min-h-[240px]">
-          {BODY[step?.key ?? "review"]}
-        </div>
+      {/* Step body — swaps per chapter while the shell stays put */}
+      <div key={step?.key} className="cs-step mt-3 sm:mt-4 min-h-[220px] sm:min-h-[240px]">
+        {BODY[step?.key ?? "review"]}
       </div>
 
       <style>{`
         @keyframes csStepIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
         .cs-step { animation: csStepIn 0.35s ease-out; }
       `}</style>
-    </div>
+    </ShowcaseShell>
   )
 }

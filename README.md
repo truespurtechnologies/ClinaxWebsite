@@ -28,11 +28,14 @@ app/
   api/demo/route.ts POST handler for the demo-request form (SMTP, rate-limited)
   robots.ts, sitemap.ts, not-found.tsx
 components/         one file per section + content.ts (all copy), legal.ts (legal copy),
-                    theme.ts, motion.ts, ui.tsx
+                    theme.ts, motion.ts, ui.tsx; product visuals are coded showcase
+                    mockups: showcase-ui.tsx (shared primitives), ModuleShowcases.tsx,
+                    ClinicalShowcase.tsx — deliberately simplified demo UIs, never raw
+                    application screenshots
 lib/site.ts         SITE_URL, TRUESPUR_URL, CONTACT_EMAIL
 lib/rate-limit.ts   in-memory rate limiter used by the API route
-public/images/      blurred product screenshots referenced from content.ts
-assets/raw/         original screenshots (Physiora-branded) - inputs for scripts/blur-screenshots.mjs, never served
+assets/raw/         original product screenshots (Physiora-branded) — source archive
+                    only, never served or copied into public/
 ```
 
 ## Development

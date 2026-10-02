@@ -126,6 +126,9 @@ export const TRUST_ITEMS = [
   { title: "Your data stays yours", text: "Full export anytime. No lock-in." },
 ]
 
+// Every product-tour tab renders a coded showcase mockup (marketing
+// visualisation, not a raw application screenshot) — see
+// components/showcase-ui.tsx, ModuleShowcases.tsx and ClinicalShowcase.tsx.
 export interface FeatureTab {
   key: string
   label: string
@@ -133,12 +136,8 @@ export interface FeatureTab {
   headline: string
   description: string
   bullets: string[]
-  screen?: { src: string; width: number; height: number; alt: string }
-  // Coded product visualisation instead of a screenshot — the Clinical Care
-  // tab renders components/ClinicalShowcase.tsx, a deliberately simplified
-  // session UI rather than raw application screens.
-  showcase?: "clinical-session"
-  subSteps?: { key: string; label: string; src?: string; width?: number; height?: number; alt?: string }[]
+  showcase: "front-desk" | "schedule" | "therapist" | "clinical-session" | "management"
+  subSteps?: { key: string; label: string }[]
 }
 
 export const FEATURE_TABS: FeatureTab[] = [
@@ -149,7 +148,7 @@ export const FEATURE_TABS: FeatureTab[] = [
     headline: "Start every day with the whole clinic in view.",
     description: "Reception sees arrivals, waiting patients, online sessions and follow-ups from one workspace — no register, no group chat.",
     bullets: ["Today's queue and arrivals at a glance", "Check-in and registration in one flow", "Follow-ups that never fall off the list", "Branch-aware view for multi-location clinics"],
-    screen: { src: "/images/front-desk.png", width: 1506, height: 680, alt: "Clinax front desk workspace showing today's appointments and waiting queue" },
+    showcase: "front-desk",
   },
   {
     key: "scheduling",
@@ -158,7 +157,7 @@ export const FEATURE_TABS: FeatureTab[] = [
     headline: "Know where capacity is — before you book.",
     description: "Therapist availability, appointment density and branch capacity in one connected schedule.",
     bullets: ["Provider-level availability", "Appointment density by hour and day", "Cross-branch view for multi-location clinics", "Reschedule without a phone tree"],
-    screen: { src: "/images/schedule.png", width: 1487, height: 665, alt: "Clinax therapist schedule showing provider availability and appointment capacity" },
+    showcase: "schedule",
   },
   {
     key: "therapist",
@@ -167,7 +166,7 @@ export const FEATURE_TABS: FeatureTab[] = [
     headline: "Give therapists the context they need, when they need it.",
     description: "Previous progress, today's priorities and clinical history in the therapist's working day — at the point of care.",
     bullets: ["Today's patients with history attached", "Progress since the last session", "Priorities and pending documentation", "Works on the treatment floor, not just at a desk"],
-    screen: { src: "/images/therapist-dashboard.png", width: 1217, height: 672, alt: "Clinax therapist dashboard showing today's patients and clinical context" },
+    showcase: "therapist",
   },
   {
     key: "clinical",
@@ -193,7 +192,7 @@ export const FEATURE_TABS: FeatureTab[] = [
     headline: "See what is happening across your clinic.",
     description: "Appointments, collections, therapist utilisation, follow-ups, clinical activity and branch visibility for owners and managers — per branch and overall.",
     bullets: ["Appointments, completions and collections at a glance", "Therapist utilisation and capacity", "Follow-up and clinical-review visibility", "Branch-level reporting without exporting to Excel"],
-    screen: { src: "/images/management-dashboard.png", width: 1492, height: 682, alt: "Clinax management dashboard showing clinic operations and performance" },
+    showcase: "management",
   },
 ]
 
