@@ -1,10 +1,12 @@
 "use client"
 
-import type { ReactNode } from "react"
+import { useEffect, useState } from "react"
+import Image from "next/image"
 import { C, HEADING } from "./theme"
-import { CAPABILITIES, HERO } from "./content"
+import { CAPABILITIES, HERO, HERO_SLIDES } from "./content"
 import { PrimaryButton, GhostButton } from "./ui"
-import { ManagementShowcase } from "./ModuleShowcases"
+
+const SLIDE_MS = 5000
 
 function CheckDot() {
   return (
@@ -15,26 +17,106 @@ function CheckDot() {
   )
 }
 
-export function ProductFrame({
-  label,
-  className = "",
-  children,
-}: {
-  label: string
-  className?: string
-  children: ReactNode
-}) {
+// Auto-scrolling imagery — crossfade + slow zoom, segmented progress bars.
+// Pauses on hover/focus, stops once a visitor picks a slide, and never
+// auto-advances under prefers-reduced-motion.
+function HeroSlideshow() {
+  const [slide, setSlide] = useState(0)
+  const [hovering, setHovering] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const [userPaused, setUserPaused] = useState(false)
+  const paused = hovering || focused || userPaused
+
+  useEffect(() => {
+    if (paused) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const id = setInterval(() => setSlide((s) => (s + 1) % HERO_SLIDES.length), SLIDE_MS)
+    return () => clearInterval(id)
+  }, [paused])
+
   return (
-    <div className={`rounded-2xl overflow-hidden bg-white ${className}`} style={{ border: `1px solid ${C.lavender}` }}>
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b" style={{ background: C.surface, borderColor: C.lavender }}>
-        <span className="w-2.5 h-2.5 rounded-full" style={{ background: C.lavender }} />
-        <span className="w-2.5 h-2.5 rounded-full" style={{ background: C.lavender }} />
-        <span className="w-2.5 h-2.5 rounded-full" style={{ background: C.lavender }} />
-        <span className="ml-2 text-[10.5px] font-bold tracking-[0.14em] uppercase" style={{ color: C.muted }}>
-          Clinax · {label}
+    <div
+      role="group"
+      aria-roledescription="carousel"
+      aria-label="Clinax across a clinic day"
+      className="relative"
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false) }}
+    >
+      <div
+        className="absolute -inset-x-8 -top-8 h-40 pointer-events-none blur-3xl opacity-70"
+        aria-hidden="true"
+        style={{ background: `linear-gradient(90deg, ${C.magenta}, ${C.violet})` }}
+      />
+
+      <div
+        className="relative aspect-video overflow-hidden rounded-3xl"
+        style={{ border: "1px solid rgba(255,255,255,0.14)", boxShadow: "0 40px 90px -30px rgba(0,0,0,0.6)" }}
+      >
+        {HERO_SLIDES.map((s, i) => (
+          <Image
+            key={s.src}
+            src={s.src}
+            alt={s.alt}
+            fill
+            priority={i === 0}
+            sizes="(min-width: 1280px) 720px, (min-width: 1024px) 56vw, 100vw"
+            className="object-cover"
+            style={{
+              opacity: i === slide ? 1 : 0,
+              transform: i === slide ? "scale(1.04)" : "scale(1)",
+              transition: "opacity 0.9s ease, transform 6.5s ease-out",
+            }}
+          />
+        ))}
+        <span
+          key={slide}
+          className="cx2-fade-in absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-bold tracking-[0.1em] uppercase backdrop-blur-sm"
+          style={{ background: "rgba(13,6,32,0.55)", color: C.white, border: "1px solid rgba(255,255,255,0.18)" }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full" style={{ background: C.magenta }} aria-hidden="true" />
+          {HERO_SLIDES[slide].label}
         </span>
       </div>
-      {children}
+
+      <div role="tablist" aria-label="Hero slides" className="mt-4 flex gap-2">
+        {HERO_SLIDES.map((s, i) => (
+          <button
+            key={s.src}
+            role="tab"
+            aria-selected={i === slide}
+            aria-label={s.label}
+            onClick={() => { setUserPaused(true); setSlide(i) }}
+            className="flex-1 cursor-pointer rounded-full py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+          >
+            <span className="relative block h-[3px] w-full overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.14)" }}>
+              <span
+                key={i === slide ? `active-${slide}` : `idle-${i}`}
+                className={`absolute inset-y-0 left-0 rounded-full ${i === slide ? "cx2-slide-fill" : ""}`}
+                style={
+                  i === slide
+                    ? {
+                        width: "100%",
+                        background: `linear-gradient(90deg, ${C.magenta}, #F29ED6)`,
+                        boxShadow: "0 0 14px rgba(196,24,147,0.6)",
+                        animationName: paused ? "none" : "cx2SlideFill",
+                        animationDuration: `${SLIDE_MS}ms`,
+                        animationTimingFunction: "linear",
+                        animationFillMode: "forwards",
+                      }
+                    : {
+                        width: i < slide ? "100%" : "0%",
+                        background: "rgba(231,217,247,0.35)",
+                        transition: "width 0.35s ease",
+                      }
+                }
+              />
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -81,64 +163,58 @@ export default function Hero() {
       />
 
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8 pt-16 pb-16 sm:pt-24">
-        <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
-          <span
-            className="relative inline-flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 rounded-full px-4 py-2 overflow-hidden backdrop-blur-sm text-[11px] font-bold tracking-[0.14em] uppercase"
-            style={{
-              background: "rgba(255,255,255,0.07)",
-              color: C.lavenderTint,
-              border: "1px solid rgba(255,255,255,0.16)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10), 0 0 30px rgba(196,24,147,0.12)",
-            }}
-          >
-            <span className="cx2-badge-sheen pointer-events-none absolute inset-0 rounded-full" aria-hidden="true" />
-            <span className="relative flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full rounded-full animate-ping motion-reduce:animate-none opacity-60" style={{ background: C.magenta }} />
-              <span className="relative inline-flex rounded-full w-1.5 h-1.5" style={{ background: C.magenta }} />
-            </span>
-            {HERO.eyebrow}
-          </span>
-          <h1
-            className="mt-7 text-[2.5rem] sm:text-[3.4rem] lg:text-[4.1rem] leading-[1.03] font-bold tracking-[-0.015em] text-white"
-            style={HEADING}
-          >
-            {HERO.headline}
-          </h1>
-          <p className="mt-7 text-[1.05rem] sm:text-[1.15rem] leading-[1.65] max-w-2xl" style={{ color: C.lilac }}>
-            {HERO.sub}
-          </p>
-
-          <div className="mt-10 flex flex-col sm:flex-row items-center gap-3.5">
-            <PrimaryButton href="#demo" size="lg">
-              {HERO.primaryCta}
-            </PrimaryButton>
-            <GhostButton href="#product" dark size="lg">
-              {HERO.secondaryCta}
-            </GhostButton>
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          {/* Imagery — dominant left column on desktop, below the copy on mobile */}
+          <div className="lg:col-span-7 lg:order-1 lg:-ml-4">
+            <HeroSlideshow />
           </div>
 
-          <ul className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2.5 text-[13px] font-medium" style={{ color: C.lavenderTint }}>
-            {HERO.trust.map((t) => (
-              <li key={t} className="flex items-center gap-2">
-                <CheckDot />
-                {t}
-              </li>
-            ))}
-          </ul>
-        </div>
+          {/* Copy — right on desktop */}
+          <div className="lg:col-span-5 lg:order-2 flex flex-col items-start text-left">
+            <span
+              className="relative inline-flex flex-wrap items-center gap-x-2.5 gap-y-1.5 rounded-full px-4 py-2 overflow-hidden backdrop-blur-sm text-[11px] font-bold tracking-[0.14em] uppercase"
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                color: C.lavenderTint,
+                border: "1px solid rgba(255,255,255,0.16)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.10), 0 0 30px rgba(196,24,147,0.12)",
+              }}
+            >
+              <span className="cx2-badge-sheen pointer-events-none absolute inset-0 rounded-full" aria-hidden="true" />
+              <span className="relative flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full rounded-full animate-ping motion-reduce:animate-none opacity-60" style={{ background: C.magenta }} />
+                <span className="relative inline-flex rounded-full w-1.5 h-1.5" style={{ background: C.magenta }} />
+              </span>
+              {HERO.eyebrow}
+            </span>
+            <h1
+              className="mt-7 text-[2.4rem] sm:text-[3rem] lg:text-[2.9rem] xl:text-[3.5rem] leading-[1.05] font-bold tracking-[-0.015em] text-white"
+              style={HEADING}
+            >
+              {HERO.headline}
+            </h1>
+            <p className="mt-7 text-[1.05rem] sm:text-[1.15rem] leading-[1.65] max-w-xl" style={{ color: C.lilac }}>
+              {HERO.sub}
+            </p>
 
-        {/* Product screenshot */}
-        <div className="relative mt-16 max-w-5xl mx-auto">
-          <div
-            className="absolute -inset-x-10 -top-10 h-40 pointer-events-none blur-3xl opacity-70"
-            style={{ background: `linear-gradient(90deg, ${C.magenta}, ${C.violet})` }}
-          />
-          <ProductFrame label="Management Dashboard" className="relative shadow-[0_40px_90px_-30px_rgba(0,0,0,0.6)]">
-            <ManagementShowcase />
-          </ProductFrame>
-          <p className="mt-3 text-center text-[11px] font-medium tracking-wide" style={{ color: C.lilac }}>
-            Demonstration data · fictional clinic
-          </p>
+            <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-3.5">
+              <PrimaryButton href="#demo" size="lg">
+                {HERO.primaryCta}
+              </PrimaryButton>
+              <GhostButton href="#product" dark size="lg">
+                {HERO.secondaryCta}
+              </GhostButton>
+            </div>
+
+            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2.5 text-[13px] font-medium" style={{ color: C.lavenderTint }}>
+              {HERO.trust.map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <CheckDot />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -150,7 +226,10 @@ export default function Hero() {
         .cx2-marquee:hover { animation-play-state: paused; }
         .cx2-badge-sheen { background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.16) 50%, transparent 65%); transform: translateX(-110%); animation: cx2BadgeSheen 6s cubic-bezier(0.4, 0, 0.2, 1) 1.2s infinite; }
         @keyframes cx2BadgeSheen { 0% { transform: translateX(-110%); } 45% { transform: translateX(110%); } 100% { transform: translateX(110%); } }
-        @media (prefers-reduced-motion: reduce) { .cx2-marquee { animation: none; flex-wrap: wrap; width: 100%; justify-content: center; } .cx2-badge-sheen { animation: none; } }
+        @keyframes cx2SlideFill { from { width: 0; } to { width: 100%; } }
+        @keyframes cx2FadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .cx2-fade-in { animation: cx2FadeIn 0.45s ease-out; }
+        @media (prefers-reduced-motion: reduce) { .cx2-marquee { animation: none; flex-wrap: wrap; width: 100%; justify-content: center; } .cx2-badge-sheen { animation: none; } .cx2-slide-fill { animation: none !important; } .cx2-fade-in { animation: none; } }
       `}</style>
     </section>
   )

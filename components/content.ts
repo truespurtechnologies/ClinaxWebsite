@@ -27,6 +27,37 @@ export const HERO = {
   trust: ["Appointment to recovery, one record", "Single branch to multi-branch", "Role-based for every team"],
 }
 
+// Auto-scrolling hero slideshow — Clinax-branded marketing scenes (webp
+// derivatives of assets/raw/Hero Images). Order follows the clinic day:
+// treatment floor → full journey → leadership → remote care → brand close.
+export const HERO_SLIDES = [
+  {
+    src: "/images/hero/hero-therapy-session.webp",
+    label: "Therapy session",
+    alt: "A physiotherapist guiding a patient through a resistance-band exercise with the Clinax therapy session screen beside them",
+  },
+  {
+    src: "/images/hero/hero-journey-collage.webp",
+    label: "Front desk to care plan",
+    alt: "A collage of a clinic day on Clinax — booking at reception, a therapist assessment and a patient viewing her care plan",
+  },
+  {
+    src: "/images/hero/hero-manager-dashboard.webp",
+    label: "Management",
+    alt: "A clinic manager reviewing the Clinax dashboard with branch performance and AI insights",
+  },
+  {
+    src: "/images/hero/hero-telehealth.webp",
+    label: "Telehealth",
+    alt: "A doctor in a video consultation working from the Clinax SOAP note with AI suggestions",
+  },
+  {
+    src: "/images/hero/hero-better-care.webp",
+    label: "Every role, one record",
+    alt: "Four scenes of a clinic on Clinax — appointment booking, a therapy session, clinical notes and a home exercise plan",
+  },
+]
+
 export const CAPABILITIES = [
   "Patient Management",
   "Appointments & Scheduling",
@@ -252,6 +283,13 @@ export const WHY_CLINAX = [
     text: "The same foundation that runs one branch is designed to support multiple branches and specialties as your clinic grows — without starting over.",
   },
 ]
+
+// The clinic-in-action photo sits beside the approach narrative — one real
+// clinic day, front desk to therapy room.
+export const WHY_CLINAX_IMAGE = {
+  alt: "A physiotherapy clinic running Clinax — front-desk appointments on the reception screen while a therapist documents a session on a tablet",
+  caption: "A clinic day on Clinax — front desk to therapy room",
+}
 
 export const FAQS = [
   {
