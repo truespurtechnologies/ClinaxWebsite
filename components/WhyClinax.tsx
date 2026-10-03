@@ -28,7 +28,7 @@ export default function WhyClinax() {
           </p>
         </div>
 
-        <figure className="relative lg:col-start-8 lg:col-span-5 lg:row-start-1 lg:row-span-2 self-start lg:sticky lg:top-28" style={riseStyle(inView, 0)}>
+        <figure className="relative min-w-0 lg:col-start-8 lg:col-span-5 lg:row-start-1 lg:row-span-2 self-start lg:sticky lg:top-28" style={riseStyle(inView, 0)}>
           <div
             className="absolute -inset-6 pointer-events-none blur-3xl opacity-60"
             aria-hidden="true"

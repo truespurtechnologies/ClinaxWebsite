@@ -35,26 +35,32 @@ export const HERO_SLIDES = [
     src: "/images/hero/hero-therapy-session.webp",
     label: "Therapy session",
     alt: "A physiotherapist guiding a patient through a resistance-band exercise with the Clinax therapy session screen beside them",
+    // object-position inside the 3:2 frame — biased left so the tablet UI stays in crop
+    position: "30% 50%",
   },
   {
     src: "/images/hero/hero-journey-collage.webp",
     label: "Front desk to care plan",
     alt: "A collage of a clinic day on Clinax — booking at reception, a therapist assessment and a patient viewing her care plan",
+    position: "50% 50%",
   },
   {
     src: "/images/hero/hero-manager-dashboard.webp",
     label: "Management",
     alt: "A clinic manager reviewing the Clinax dashboard with branch performance and AI insights",
+    position: "62% 50%",
   },
   {
     src: "/images/hero/hero-telehealth.webp",
     label: "Telehealth",
     alt: "A doctor in a video consultation working from the Clinax SOAP note with AI suggestions",
+    position: "60% 50%",
   },
   {
     src: "/images/hero/hero-better-care.webp",
     label: "Every role, one record",
     alt: "Four scenes of a clinic on Clinax — appointment booking, a therapy session, clinical notes and a home exercise plan",
+    position: "50% 50%",
   },
 ]
 

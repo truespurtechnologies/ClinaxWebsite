@@ -94,12 +94,12 @@ export default function Nav() {
           {/* Both variants stay mounted so the swap on scroll doesn't refetch. */}
           <ClinaxLogo variant="reversed" height={38} className={onDark ? "block" : "hidden"} />
           <ClinaxLogo variant="primary" height={38} className={onDark ? "hidden" : "block"} />
-          <span className="hidden sm:inline text-[11px] font-medium tracking-wide border-l pl-2.5 ml-0.5" style={{ color: mutedColor, borderColor: onDark ? "rgba(255,255,255,0.18)" : C.lavender }}>
+          <span className="hidden lg:inline text-[11px] font-medium tracking-wide border-l pl-2.5 ml-0.5" style={{ color: mutedColor, borderColor: onDark ? "rgba(255,255,255,0.18)" : C.lavender }}>
             by TrueSpur
           </span>
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {NAV_LINKS.map((l) => {
             const isActive = active === l.href
             return (
@@ -107,7 +107,7 @@ export default function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={(e) => { e.preventDefault(); go(l.href) }}
-                className="relative text-[14px] font-semibold transition-opacity duration-150 hover:opacity-70 cursor-pointer py-1"
+                className="relative whitespace-nowrap text-[14px] font-semibold transition-opacity duration-150 hover:opacity-70 cursor-pointer py-1"
                 style={{ color: isActive ? (onDark ? C.white : C.violet) : textColor }}
               >
                 {l.label}

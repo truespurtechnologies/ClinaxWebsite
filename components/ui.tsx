@@ -34,7 +34,7 @@ export function PrimaryButton({
         if (onClick) onClick()
         else scrollToId(href)
       }}
-      className={`group inline-flex items-center gap-2.5 rounded-full font-semibold text-white shadow-[0_10px_30px_-10px_rgba(91,15,193,0.6)] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-10px_rgba(196,24,147,0.55)] active:translate-y-0 cursor-pointer ${pad} ${className}`}
+      className={`group inline-flex items-center gap-2.5 whitespace-nowrap rounded-full font-semibold text-white shadow-[0_10px_30px_-10px_rgba(91,15,193,0.6)] transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-10px_rgba(196,24,147,0.55)] active:translate-y-0 cursor-pointer ${pad} ${className}`}
       style={{ background: GRADIENT }}
     >
       {children}
