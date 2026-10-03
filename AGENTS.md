@@ -27,7 +27,7 @@ for the same form. Keep button labels Title Case, form/heading copy sentence cas
 - `assets/raw/` holds Physiora-branded source screenshots — an archive only; never move them into
   `public/` or serve them. Exception: `Clinax Physiotherapy Clinic in Action.png` is Clinax-branded
   marketing art (same fictional cast as the mockups); its webp derivative is served at
-  `public/images/clinic-in-action.webp` in "The Clinax approach" (`WhyClinax`). The five scenes in
+  `public/images/clinic-in-action.webp` in "The Clinax approach" (`WhyClinax`). The scenes in
   `assets/raw/Hero Images/` are likewise Clinax-branded marketing art — webp derivatives at
   `public/images/hero/` feed the hero's auto-scrolling slideshow (`HERO_SLIDES` in `content.ts`).
 - All product visuals are coded showcase mockups — `components/showcase-ui.tsx` (shared primitives),

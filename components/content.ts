@@ -19,48 +19,50 @@ export const CTA = {
 }
 
 export const HERO = {
-  eyebrow: CTA.status,
-  headline: "Run your clinic without WhatsApp chaos, spreadsheets and paper files.",
-  sub: "The clinical operating system for growing physiotherapy & rehabilitation clinics — reception, therapists and leadership working from one connected record.",
+  status: CTA.status,
+  eyebrow: "The Clinical Operating System",
+  headline: "One connected clinic. Every team. Every patient. One record.",
+  sub: "Clinax connects reception, therapists, patients and leadership on one operating system — from appointment to treatment to recovery.",
   primaryCta: CTA.primary,
   secondaryCta: CTA.secondary,
   trust: ["Appointment to recovery, one record", "Single branch to multi-branch", "Role-based for every team"],
 }
 
 // Auto-scrolling hero slideshow — Clinax-branded marketing scenes (webp
-// derivatives of assets/raw/Hero Images). Order follows the clinic day:
-// treatment floor → full journey → leadership → remote care → brand close.
+// derivatives of assets/raw/Hero Images). Order tells the connected-clinic
+// story: whole clinic → therapist → patient → remote care → leadership.
 export const HERO_SLIDES = [
   {
+    src: "/images/hero/hero-connected-clinic.webp",
+    label: "Connected Clinic",
+    alt: "A Clinax front desk — a receptionist walking a patient through the clinic dashboard while therapists treat patients in the background",
+    // object-position inside the 3:2 frame — biased right so the dashboard stays in crop
+    position: "55% 50%",
+  },
+  {
     src: "/images/hero/hero-therapy-session.webp",
-    label: "Therapy session",
+    label: "Therapist Workflow",
     alt: "A physiotherapist guiding a patient through a resistance-band exercise with the Clinax therapy session screen beside them",
     // object-position inside the 3:2 frame — biased left so the tablet UI stays in crop
     position: "30% 50%",
   },
   {
     src: "/images/hero/hero-journey-collage.webp",
-    label: "Front desk to care plan",
+    label: "Patient Journey",
     alt: "A collage of a clinic day on Clinax — booking at reception, a therapist assessment and a patient viewing her care plan",
     position: "50% 50%",
   },
   {
-    src: "/images/hero/hero-manager-dashboard.webp",
-    label: "Management",
-    alt: "A clinic manager reviewing the Clinax dashboard with branch performance and AI insights",
-    position: "62% 50%",
-  },
-  {
     src: "/images/hero/hero-telehealth.webp",
-    label: "Telehealth",
+    label: "Connected Care",
     alt: "A doctor in a video consultation working from the Clinax SOAP note with AI suggestions",
     position: "60% 50%",
   },
   {
-    src: "/images/hero/hero-better-care.webp",
-    label: "Every role, one record",
-    alt: "Four scenes of a clinic on Clinax — appointment booking, a therapy session, clinical notes and a home exercise plan",
-    position: "50% 50%",
+    src: "/images/hero/hero-manager-dashboard.webp",
+    label: "Management Visibility",
+    alt: "A clinic manager reviewing the Clinax dashboard with branch performance and AI insights",
+    position: "62% 50%",
   },
 ]
 

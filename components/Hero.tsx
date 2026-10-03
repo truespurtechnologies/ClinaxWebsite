@@ -61,9 +61,9 @@ function HeroSlideshow() {
             style={{
               objectPosition: s.position,
               opacity: i === slide ? 1 : 0,
-              transform: i === slide ? "scale(1.03)" : "scale(1)",
+              transform: i === slide ? "scale(1.02)" : "scale(1)",
               filter: "saturate(0.95) contrast(1.02)",
-              transition: "opacity 1.1s ease-in-out, transform 8s ease-out",
+              transition: "opacity 1.3s ease-in-out, transform 9s ease-out",
             }}
           />
         ))}
@@ -173,15 +173,18 @@ export default function Hero() {
               }}
             >
               <span className="w-1.5 h-1.5 shrink-0 rounded-full" style={{ background: C.magenta }} aria-hidden="true" />
-              {HERO.eyebrow}
+              {HERO.status}
             </span>
+            <p className="mt-7 text-[13px] font-semibold tracking-[0.22em] uppercase" style={{ color: C.lilac }}>
+              {HERO.eyebrow}
+            </p>
             <h1
-              className="mt-8 text-balance text-[2.4rem] sm:text-[3rem] lg:text-[2.9rem] xl:text-[3.5rem] leading-[1.05] font-bold tracking-[-0.015em] text-white"
+              className="mt-4 text-balance text-[2.3rem] sm:text-[2.75rem] lg:text-[2.6rem] xl:text-[3.05rem] leading-[1.07] font-bold tracking-[-0.015em] text-white"
               style={HEADING}
             >
               {HERO.headline}
             </h1>
-            <p className="mt-6 text-[1.05rem] sm:text-[1.15rem] leading-[1.65] max-w-xl" style={{ color: C.lilac }}>
+            <p className="mt-7 text-[1rem] sm:text-[1.1rem] leading-[1.7] max-w-xl" style={{ color: C.lilac }}>
               {HERO.sub}
             </p>
 
@@ -194,7 +197,7 @@ export default function Hero() {
               </GhostButton>
             </div>
 
-            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13px] font-medium" style={{ color: C.lavenderTint }}>
+            <ul className="mt-9 hidden lg:flex flex-col gap-y-2.5 text-[13px] font-medium" style={{ color: C.lavenderTint }}>
               {HERO.trust.map((t) => (
                 <li key={t} className="flex items-center gap-2">
                   <CheckDot />
@@ -208,6 +211,20 @@ export default function Hero() {
           <div className="lg:col-span-7 lg:order-2 lg:-mr-4">
             <HeroSlideshow />
           </div>
+
+          {/* Proof points — after the imagery on mobile, inside the copy column on desktop */}
+          <ul
+            aria-hidden="true"
+            className="mt-2 flex lg:hidden flex-col gap-y-2.5 text-[13px] font-medium"
+            style={{ color: C.lavenderTint }}
+          >
+            {HERO.trust.map((t) => (
+              <li key={t} className="flex items-center gap-2">
+                <CheckDot />
+                {t}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
