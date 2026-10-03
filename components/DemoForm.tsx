@@ -20,6 +20,16 @@ const EMPTY: FormState = { name: "", email: "", phone: "", clinic: "", role: "",
 
 const ROLE_OPTIONS = ["Clinic owner / founder", "Clinic manager", "Physiotherapist / clinician", "Reception / operations", "Other"]
 const BRANCH_OPTIONS = ["1 branch", "2–3 branches", "4–6 branches", "7+ branches"]
+const INTEREST_OPTIONS = [
+  "Appointments & scheduling",
+  "Reception operations",
+  "Clinical documentation",
+  "Therapist workflow",
+  "Multi-branch management",
+  "Reporting & dashboards",
+  "Patient follow-up",
+  "Full platform walkthrough",
+]
 
 const inputCls =
   "w-full rounded-xl px-4 py-3 text-[15px] outline-none transition-shadow duration-150 focus:shadow-[0_0_0_3px_rgba(91,15,193,0.18)] placeholder:text-[#9C93AE]"
@@ -143,7 +153,10 @@ export default function DemoForm() {
       </div>
 
       <Field label="What would you like to see?" htmlFor="cx2-message">
-        <textarea id="cx2-message" name="message" rows={3} value={form.message} onChange={set("message")} className={`${inputCls} resize-y`} style={inputStyle} placeholder="e.g. Front desk + scheduling across 2 branches, therapist documentation…" />
+        <select id="cx2-message" name="message" value={form.message} onChange={set("message")} className={inputCls} style={inputStyle}>
+          <option value="">Select…</option>
+          {INTEREST_OPTIONS.map((o) => <option key={o}>{o}</option>)}
+        </select>
       </Field>
 
       {status === "error" && (

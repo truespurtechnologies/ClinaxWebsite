@@ -26,7 +26,7 @@ export default function TrustStrip() {
         <div className="text-center flex flex-col items-center">
           <Eyebrow>Trust is part of the design</Eyebrow>
           <h2 className="mt-5 text-[1.7rem] sm:text-[2.1rem] leading-[1.15] font-bold tracking-[-0.01em]" style={{ ...HEADING, color: C.ink }}>
-            Patient care deserves <em style={{ color: C.magenta }}>thoughtful protection.</em>
+            <em style={{ color: C.magenta }}>Security and privacy</em> are built into the foundation.
           </h2>
           <p className="mt-4 text-[15px] leading-[1.7] max-w-xl" style={{ color: C.muted }}>
             {TRUST_INTRO}

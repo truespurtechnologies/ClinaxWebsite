@@ -102,7 +102,7 @@ export default function ProductExperience() {
           dark
           eyebrow="See it in action"
           title={<>See how a day runs on Clinax.</>}
-          sub="Real screens from the roles that run your clinic every day."
+          sub="See Clinax through the roles that run your clinic every day."
         />
 
         {/* Tab strip */}
