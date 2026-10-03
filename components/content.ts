@@ -22,7 +22,7 @@ export const HERO = {
   status: CTA.status,
   eyebrow: "The Clinical Operating System",
   headline: "One connected clinic. Every team. Every patient. One record.",
-  sub: "Clinax connects reception, therapists, patients and leadership on one operating system — from appointment to treatment to recovery.",
+  sub: "Clinax connects reception, therapists and leadership around one patient record — from appointment to treatment to recovery.",
   primaryCta: CTA.primary,
   secondaryCta: CTA.secondary,
   trust: ["Appointment to recovery, one record", "Single branch to multi-branch", "Role-based for every team"],
