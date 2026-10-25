@@ -1,5 +1,8 @@
+import createMDX from '@next/mdx'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  pageExtensions: ['ts', 'tsx', 'mdx'],
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
@@ -31,4 +34,8 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+// Blog articles live in content/blog/*.mdx and are imported by
+// app/blog/[slug]/page.tsx; post metadata is registered in lib/blog.ts.
+const withMDX = createMDX({})
+
+export default withMDX(nextConfig)

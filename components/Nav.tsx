@@ -1,8 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { C, GRADIENT } from "./theme"
-import { CTA, NAV_LINKS } from "./content"
+import { CTA, NAV_LINKS, NAV_ROUTES } from "./content"
 import { scrollToId } from "./motion"
 import { PrimaryButton } from "./ui"
 
@@ -32,7 +34,12 @@ export function ClinaxLogo({
   return <img src={src} alt="Clinax" style={{ height }} className={`w-auto ${className}`} />
 }
 
+// Route-aware: on the homepage the anchor links smooth-scroll and drive the
+// scroll-spy; on /solutions/*, /blog/* etc. they become "/#section" links
+// that navigate home, and the current route is highlighted instead.
 export default function Nav() {
+  const pathname = usePathname()
+  const isHome = pathname === "/"
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState("")
@@ -48,6 +55,7 @@ export default function Nav() {
   // band of the viewport. When several match, the lowest one wins — that's
   // the section the reader is moving into.
   useEffect(() => {
+    if (!isHome) return
     const links = NAV_LINKS.map((l) => l.href)
     const visible = new Set<string>()
     const obs = new IntersectionObserver(
@@ -66,12 +74,14 @@ export default function Nav() {
       if (el) obs.observe(el)
     })
     return () => obs.disconnect()
-  }, [])
+  }, [isHome])
 
   const go = (href: string) => {
     setMenuOpen(false)
     scrollToId(href)
   }
+  const anchorHref = (href: string) => (isHome ? href : `/${href}`)
+  const isRouteActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
 
   // The hero is dark, so the nav is light-on-dark until the page scrolls.
   const onDark = !scrolled && !menuOpen
@@ -85,11 +95,11 @@ export default function Nav() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[68px] flex items-center justify-between">
-        <a
-          href="#top"
-          onClick={(e) => { e.preventDefault(); setMenuOpen(false); scrollToId("#top") }}
+        <Link
+          href="/"
+          onClick={(e) => { if (isHome) { e.preventDefault(); scrollToId("#top") } setMenuOpen(false) }}
           className="flex items-center gap-2.5"
-          aria-label="Clinax — back to top"
+          aria-label={isHome ? "Clinax — back to top" : "Clinax — home"}
         >
           {/* Both variants stay mounted so the swap on scroll doesn't refetch. */}
           <ClinaxLogo variant="reversed" height={38} className={onDark ? "block" : "hidden"} />
@@ -97,16 +107,16 @@ export default function Nav() {
           <span className="hidden lg:inline text-[11px] font-medium tracking-wide border-l pl-2.5 ml-0.5" style={{ color: mutedColor, borderColor: onDark ? "rgba(255,255,255,0.18)" : C.lavender }}>
             by TrueSpur
           </span>
-        </a>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {NAV_LINKS.map((l) => {
-            const isActive = active === l.href
+            const isActive = isHome && active === l.href
             return (
               <a
                 key={l.href}
-                href={l.href}
-                onClick={(e) => { e.preventDefault(); go(l.href) }}
+                href={anchorHref(l.href)}
+                onClick={(e) => { if (isHome) { e.preventDefault(); go(l.href) } }}
                 className="relative whitespace-nowrap text-[14px] font-semibold transition-opacity duration-150 hover:opacity-70 cursor-pointer py-1"
                 style={{ color: isActive ? (onDark ? C.white : C.violet) : textColor }}
               >
@@ -117,6 +127,24 @@ export default function Nav() {
                   aria-hidden="true"
                 />
               </a>
+            )
+          })}
+          {NAV_ROUTES.map((l) => {
+            const isActive = isRouteActive(l.href)
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="relative whitespace-nowrap text-[14px] font-semibold transition-opacity duration-150 hover:opacity-70 py-1"
+                style={{ color: isActive ? (onDark ? C.white : C.violet) : textColor }}
+              >
+                {l.label}
+                <span
+                  className="absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full transition-opacity duration-200"
+                  style={{ background: GRADIENT, opacity: isActive ? 1 : 0 }}
+                  aria-hidden="true"
+                />
+              </Link>
             )
           })}
         </nav>
@@ -151,13 +179,24 @@ export default function Nav() {
           {NAV_LINKS.map((l) => (
             <a
               key={l.href}
-              href={l.href}
-              onClick={(e) => { e.preventDefault(); go(l.href) }}
-              className="text-base font-semibold py-3 text-left border-b last:border-0 cursor-pointer block"
+              href={anchorHref(l.href)}
+              onClick={(e) => { if (isHome) { e.preventDefault(); go(l.href) } else setMenuOpen(false) }}
+              className="text-base font-semibold py-3 text-left border-b cursor-pointer block"
               style={{ color: C.ink, borderColor: C.surface }}
             >
               {l.label}
             </a>
+          ))}
+          {NAV_ROUTES.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              onClick={() => setMenuOpen(false)}
+              className="text-base font-semibold py-3 text-left border-b last:border-0 block"
+              style={{ color: isRouteActive(l.href) ? C.violet : C.ink, borderColor: C.surface }}
+            >
+              {l.label}
+            </Link>
           ))}
           <div className="pt-3">
             <PrimaryButton href="#demo" onClick={() => go("#demo")} className="w-full justify-center">

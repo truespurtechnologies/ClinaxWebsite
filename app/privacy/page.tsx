@@ -4,10 +4,11 @@ import { PRIVACY } from "@/components/legal"
 import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Clinax",
+  title: "Privacy Policy",
   description:
     "How Clinax, a TrueSpur product, collects, uses and protects information through the Clinax website and demo or early-access requests.",
   alternates: { canonical: `${SITE_URL}/privacy` },
+  openGraph: { url: `${SITE_URL}/privacy` },
 }
 
 export default function PrivacyPage() {

@@ -4,10 +4,11 @@ import { TERMS } from "@/components/legal"
 import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-  title: "Terms of Service — Clinax",
+  title: "Terms of Service",
   description:
     "Terms governing use of the Clinax website, a clinical operating system for physiotherapy and rehabilitation clinics by TrueSpur.",
   alternates: { canonical: `${SITE_URL}/terms` },
+  openGraph: { url: `${SITE_URL}/terms` },
 }
 
 export default function TermsPage() {

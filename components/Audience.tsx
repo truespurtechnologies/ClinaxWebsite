@@ -1,7 +1,7 @@
 "use client"
 
 import { C, GRADIENT, HEADING } from "./theme"
-import { AUDIENCE, AUDIENCE_SUPPORT } from "./content"
+import { AUDIENCE, AUDIENCE_HEADING, AUDIENCE_SUPPORT } from "./content"
 import { useInView, riseStyle } from "./motion"
 import { SectionHeading } from "./ui"
 
@@ -22,12 +22,9 @@ const ICONS = [
 export default function Audience() {
   const { ref, inView } = useInView(0.2)
   return (
-    <section className="py-16 sm:py-20" style={{ background: C.surface, borderBottom: `1px solid ${C.lavender}` }}>
+    <section id="who-its-for" className="py-16 sm:py-20 scroll-mt-20" style={{ background: C.surface, borderBottom: `1px solid ${C.lavender}` }}>
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <SectionHeading
-          eyebrow="Who Clinax is for"
-          title="For clinics where coordination is getting harder."
-        />
+        <SectionHeading eyebrow={AUDIENCE_HEADING.eyebrow} title={AUDIENCE_HEADING.title} sub={AUDIENCE_HEADING.intro} />
 
         <div
           ref={ref}

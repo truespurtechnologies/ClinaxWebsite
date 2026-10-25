@@ -21,7 +21,7 @@ const TRUST_ICONS = [
 export default function TrustStrip() {
   const { ref, inView } = useInView(0.2)
   return (
-    <section className="py-16 sm:py-20" style={{ background: C.surface, borderTop: `1px solid ${C.lavender}`, borderBottom: `1px solid ${C.lavender}` }}>
+    <section id="security" className="py-16 sm:py-20 scroll-mt-20" style={{ background: C.surface, borderTop: `1px solid ${C.lavender}`, borderBottom: `1px solid ${C.lavender}` }}>
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="text-center flex flex-col items-center">
           <Eyebrow>Trust is part of the design</Eyebrow>
@@ -40,9 +40,9 @@ export default function TrustStrip() {
                   {TRUST_ICONS[i]}
                 </svg>
               </span>
-              <p className="mt-3.5 text-[14.5px] font-bold" style={{ color: C.ink }}>
+              <h3 className="mt-3.5 text-[14.5px] font-bold" style={{ color: C.ink }}>
                 {t.title}
-              </p>
+              </h3>
               <p className="mt-1.5 text-[13px] leading-[1.55]" style={{ color: C.muted }}>
                 {t.text}
               </p>

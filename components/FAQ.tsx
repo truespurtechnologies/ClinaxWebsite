@@ -9,9 +9,11 @@ import { scrollToId } from "./motion"
 
 const INITIAL = 5
 
+// Every question and answer is rendered server-side (answers via
+// `forceMount`, the tail of the list via `hidden`) so crawlers see the full
+// FAQ that components/content.ts also feeds into the FAQPage JSON-LD.
 export default function FAQ() {
   const [expanded, setExpanded] = useState(false)
-  const shown = expanded ? FAQS : FAQS.slice(0, INITIAL)
 
   return (
     <section id="faq" className="py-24 sm:py-28 scroll-mt-20 bg-white">
@@ -19,10 +21,11 @@ export default function FAQ() {
         <SectionHeading eyebrow="FAQ" title="Questions clinic owners ask." sub="Straight answers — no sales pitch." />
 
         <Accordion.Root type="single" collapsible className="flex flex-col gap-3">
-          {shown.map((f, i) => (
+          {FAQS.map((f, i) => (
             <Accordion.Item
               key={f.q}
               value={`faq-${i}`}
+              hidden={!expanded && i >= INITIAL}
               className="rounded-2xl bg-white overflow-hidden data-[state=open]:shadow-[0_18px_40px_-24px_rgba(91,15,193,0.35)]"
               style={{ border: `1px solid ${C.lavender}` }}
             >
@@ -42,7 +45,7 @@ export default function FAQ() {
                   </span>
                 </Accordion.Trigger>
               </Accordion.Header>
-              <Accordion.Content className="overflow-hidden cx2-acc">
+              <Accordion.Content forceMount className="overflow-hidden cx2-acc">
                 <p className="px-6 pb-6 -mt-1 text-[15px] leading-[1.7]" style={{ color: C.muted }}>
                   {f.a}
                 </p>
@@ -84,9 +87,8 @@ export default function FAQ() {
 
       <style>{`
         @keyframes cx2AccDown { from { height: 0; opacity: 0; } to { height: var(--radix-accordion-content-height); opacity: 1; } }
-        @keyframes cx2AccUp { from { height: var(--radix-accordion-content-height); opacity: 1; } to { height: 0; opacity: 0; } }
         .cx2-acc[data-state="open"] { animation: cx2AccDown 0.28s cubic-bezier(0.22,1,0.36,1); }
-        .cx2-acc[data-state="closed"] { animation: cx2AccUp 0.22s ease-in; }
+        .cx2-acc[data-state="closed"] { display: none; }
         @media (prefers-reduced-motion: reduce) { .cx2-acc { animation: none !important; } }
       `}</style>
     </section>

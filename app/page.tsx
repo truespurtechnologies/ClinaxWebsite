@@ -13,10 +13,20 @@ import FAQ from "@/components/FAQ"
 import FinalCTA from "@/components/FinalCTA"
 import Footer from "@/components/Footer"
 import StickyCTA from "@/components/StickyCTA"
+import JsonLd from "@/components/JsonLd"
+import { FAQS } from "@/components/content"
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, HOME_LAST_MODIFIED, faqLd, graph, softwareLd, webPageLd } from "@/lib/seo"
 
 export default function ClinaxPage() {
   return (
     <>
+      <JsonLd
+        data={graph(
+          webPageLd({ path: "/", title: DEFAULT_TITLE, description: DEFAULT_DESCRIPTION, dateModified: HOME_LAST_MODIFIED }),
+          softwareLd(),
+          faqLd(FAQS)
+        )}
+      />
       <Nav />
       <main className="overflow-x-clip">
         <Hero />

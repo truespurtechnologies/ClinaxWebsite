@@ -166,9 +166,9 @@ export default function Platform() {
                   {AREA_ICONS[i]}
                 </svg>
               </span>
-              <p className="mt-4 text-[15px] font-bold" style={{ ...HEADING, color: C.ink }}>
+              <h3 className="mt-4 text-[15px] font-bold" style={{ ...HEADING, color: C.ink }}>
                 {area.label}
-              </p>
+              </h3>
               <p className="mt-2 text-[14px] leading-[1.55] font-medium" style={{ color: C.violet }}>
                 {area.value}
               </p>

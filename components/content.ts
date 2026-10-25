@@ -1,11 +1,19 @@
 // All copy and structured data for the Clinax page lives here so it can be
 // edited without touching component markup.
 
+// In-page anchors scroll on the homepage; from any other route the Nav
+// rewrites them to "/#…" so they navigate home first.
 export const NAV_LINKS = [
   { label: "Platform", href: "#platform" },
   { label: "Product Tour", href: "#product" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "FAQ", href: "#faq" },
+]
+
+// Standalone routes shown alongside the anchors.
+export const NAV_ROUTES = [
+  { label: "Solutions", href: "/solutions" },
+  { label: "Blog", href: "/blog" },
 ]
 
 // CTA wording used across nav, hero, product section, sticky bar and final
@@ -20,7 +28,7 @@ export const CTA = {
 
 export const HERO = {
   status: CTA.status,
-  eyebrow: "The Clinical Operating System",
+  eyebrow: "Physiotherapy Clinic Management Software · The Clinical Operating System",
   headline: "One connected clinic. Every team. Every patient. One record.",
   sub: "Clinax connects reception, therapists and leadership around one patient record — from appointment to treatment to recovery.",
   primaryCta: CTA.primary,
@@ -246,6 +254,15 @@ export const AUDIENCE = [
   { title: "Rehabilitation Centres", text: "Organisations managing structured treatment journeys across therapists and rehabilitation services." },
 ]
 
+// Section heading + intro carry the primary search phrase ("clinic management
+// software for physiotherapy") in plain prose — the hero H1 stays brand-voice.
+export const AUDIENCE_HEADING = {
+  eyebrow: "Who Clinax is for",
+  title: "Clinic management software for physiotherapy and rehabilitation practices.",
+  intro:
+    "Most physiotherapy clinics in India still run on a mix of WhatsApp groups, spreadsheets and paper files. Clinax replaces that patchwork with one clinical operating system: appointments, check-in, session documentation, care plans, follow-ups and branch dashboards, all working from a single patient record. It is built for clinics where coordination between reception, therapists and owners is getting harder.",
+}
+
 export const AUDIENCE_SUPPORT = "Starting with physiotherapy and rehabilitation. Designed to expand across allied health."
 
 // Product direction — AI-assisted capabilities. Every item is upcoming; none
@@ -365,8 +382,27 @@ export const FINAL_CTA = {
 export const FOOTER_LINKS = [
   { label: "Platform", href: "/#platform" },
   { label: "Product Tour", href: "/#product" },
+  { label: "Who It's For", href: "/#who-its-for" },
   { label: "How It Works", href: "/#how-it-works" },
+  { label: "Security", href: "/#security" },
   { label: "FAQ", href: "/#faq" },
+]
+
+// Footer "Solutions" column — one link per search-intent landing page
+// (components/solutions.ts). Internal links from every page are what let
+// those pages rank.
+export const FOOTER_SOLUTIONS = [
+  { label: "Physiotherapy Clinic Software", href: "/solutions/physiotherapy-clinic-management-software" },
+  { label: "Clinic Management", href: "/solutions/clinic-management-software" },
+  { label: "Clinical Operating System", href: "/solutions/clinic-operating-system" },
+  { label: "Rehabilitation Centre Software", href: "/solutions/rehabilitation-centre-software" },
+  { label: "Multi-Branch Clinic Management", href: "/solutions/multi-branch-clinic-software" },
+]
+
+export const FOOTER_RESOURCES = [
+  { label: "Blog", href: "/blog" },
+  { label: "All solutions", href: "/solutions" },
+  { label: "RSS feed", href: "/feed.xml" },
 ]
 
 export const LEGAL_LINKS = [

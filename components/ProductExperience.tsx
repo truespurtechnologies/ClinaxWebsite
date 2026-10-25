@@ -197,7 +197,9 @@ export default function ProductExperience() {
           </div>
         )}
 
-        {/* Panel */}
+        {/* Panel. The copy for every tab is in the DOM (inactive tabs
+            `hidden`) so the full module description is server-rendered and
+            crawlable; only the active showcase mockup is mounted. */}
         <div
           role="tabpanel"
           id={`cx2-panel-${current.key}`}
@@ -205,36 +207,39 @@ export default function ProductExperience() {
           className="mt-8 grid lg:grid-cols-12 gap-8 lg:gap-10 items-center"
         >
           <div className="lg:col-span-4 min-w-0">
-            <div className="flex items-center gap-2.5 flex-wrap">
-              <p className="text-[11px] font-bold tracking-[0.16em] uppercase" style={{ color: C.magenta }}>
-                {String(tab + 1).padStart(2, "0")} — {current.label}
-              </p>
-              <span
-                className="text-[10px] font-bold tracking-[0.12em] uppercase rounded-full px-2.5 py-1"
-                style={{ background: "rgba(255,255,255,0.08)", color: C.lavenderTint, border: "1px solid rgba(255,255,255,0.14)" }}
-              >
-                {current.role}
-              </span>
-            </div>
-            <h3 className="mt-3 text-[1.7rem] sm:text-[2rem] leading-[1.15] font-bold text-white" style={HEADING}>
-              {current.headline}
-            </h3>
-            <p className="mt-4 text-[15px] leading-[1.65]" style={{ color: C.lilac }}>
-              {current.description}
-            </p>
-            <ul className="mt-6 flex flex-col gap-3">
-              {current.bullets.map((b) => (
-                <li key={b} className="flex items-start gap-3 text-[14.5px]" style={{ color: C.lavenderTint }}>
-                  <span className="mt-1 w-4 h-4 rounded-full shrink-0 flex items-center justify-center" style={{ background: GRADIENT }}>
-                    <svg width="8" height="8" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                      <path d="M2 5.2l2.2 2.2L8 3" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+            {FEATURE_TABS.map((t, i) => (
+              <div key={t.key} hidden={i !== tab}>
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <p className="text-[11px] font-bold tracking-[0.16em] uppercase" style={{ color: C.magenta }}>
+                    {String(i + 1).padStart(2, "0")} — {t.label}
+                  </p>
+                  <span
+                    className="text-[10px] font-bold tracking-[0.12em] uppercase rounded-full px-2.5 py-1"
+                    style={{ background: "rgba(255,255,255,0.08)", color: C.lavenderTint, border: "1px solid rgba(255,255,255,0.14)" }}
+                  >
+                    {t.role}
                   </span>
-                  {b}
-                </li>
-              ))}
-            </ul>
-
+                </div>
+                <h3 className="mt-3 text-[1.7rem] sm:text-[2rem] leading-[1.15] font-bold text-white" style={HEADING}>
+                  {t.headline}
+                </h3>
+                <p className="mt-4 text-[15px] leading-[1.65]" style={{ color: C.lilac }}>
+                  {t.description}
+                </p>
+                <ul className="mt-6 flex flex-col gap-3">
+                  {t.bullets.map((b) => (
+                    <li key={b} className="flex items-start gap-3 text-[14.5px]" style={{ color: C.lavenderTint }}>
+                      <span className="mt-1 w-4 h-4 rounded-full shrink-0 flex items-center justify-center" style={{ background: GRADIENT }}>
+                        <svg width="8" height="8" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                          <path d="M2 5.2l2.2 2.2L8 3" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </span>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
           <div className="lg:col-span-8 min-w-0">

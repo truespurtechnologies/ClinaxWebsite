@@ -38,7 +38,15 @@ export function riseStyle(active: boolean, delay = 0, distance = 14): CSSPropert
   }
 }
 
+// Smooth-scrolls to an in-page anchor. Off the homepage (or when the target
+// section isn't on this page) it falls back to a normal navigation so the
+// same "#demo" / "#product" hrefs work from /solutions/* and /blog/*.
 export function scrollToId(href: string) {
+  if (!href.startsWith("#")) {
+    window.location.assign(href)
+    return
+  }
   const el = document.querySelector(href)
   if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
+  else window.location.assign(`/${href}`)
 }

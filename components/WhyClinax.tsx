@@ -13,7 +13,7 @@ import { Eyebrow } from "./ui"
 export default function WhyClinax() {
   const { ref, inView } = useInView(0.15)
   return (
-    <section className="py-24 sm:py-28 bg-white">
+    <section id="why-clinax" className="py-24 sm:py-28 scroll-mt-20 bg-white">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-12 gap-x-16 gap-y-10">
         <div className="lg:col-span-7">
           <Eyebrow>The Clinax approach</Eyebrow>

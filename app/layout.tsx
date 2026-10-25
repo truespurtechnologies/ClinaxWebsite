@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
 import { Caladea, Plus_Jakarta_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 import { SITE_NAME, SITE_URL } from "@/lib/site"
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, KEYWORDS, OG_IMAGE, TITLE_TEMPLATE, graph, organizationLd, websiteLd } from "@/lib/seo"
+import JsonLd from "@/components/JsonLd"
 
 // Clinax identity mirrors the Clinax × Physiora proposal deck:
 // Cambria headings (Caladea is the metric-compatible web equivalent) and a
@@ -22,37 +25,39 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 })
 
-const TITLE = "Clinax — Clinical Operating System for Physio & Rehab Clinics"
-const DESCRIPTION =
-  "Clinax replaces WhatsApp, spreadsheets and paper with one clinical operating system connecting reception, therapists and leadership — built for growing physiotherapy & rehabilitation clinics."
+const google = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+const bing = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: TITLE,
-  description: DESCRIPTION,
+  title: { default: DEFAULT_TITLE, template: TITLE_TEMPLATE },
+  description: DEFAULT_DESCRIPTION,
   applicationName: SITE_NAME,
+  keywords: KEYWORDS,
+  authors: [{ name: "TrueSpur", url: "https://truespur.ai" }],
+  creator: "TrueSpur",
+  publisher: "TrueSpur",
+  category: "Business Software",
   alternates: { canonical: SITE_URL },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
+  verification: {
+    ...(google ? { google } : {}),
+    ...(bing ? { other: { "msvalidate.01": bing } } : {}),
+  },
   openGraph: {
-    title: TITLE,
-    description: "Built for growing physiotherapy & rehabilitation clinics. One connected operating system for reception, therapists, patients and leadership. Now onboarding early clinics.",
     type: "website",
+    locale: "en_IN",
     url: SITE_URL,
     siteName: SITE_NAME,
-    images: [
-      {
-        url: "/images/management-dashboard.png",
-        width: 1492,
-        height: 682,
-        alt: "Clinax management dashboard — appointments, revenue and therapist utilisation in one view",
-      },
-    ],
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
-    images: ["/images/management-dashboard.png"],
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE.url],
   },
 }
 
@@ -60,8 +65,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${caladea.variable} ${jakarta.variable}`}>
       <body className="antialiased" style={{ fontFamily: "var(--font-cx2-body)" }}>
+        <JsonLd data={graph(organizationLd(), websiteLd())} />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
