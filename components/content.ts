@@ -254,13 +254,11 @@ export const AUDIENCE = [
   { title: "Rehabilitation Centres", text: "Organisations managing structured treatment journeys across therapists and rehabilitation services." },
 ]
 
-// Section heading + intro carry the primary search phrase ("clinic management
-// software for physiotherapy") in plain prose — the hero H1 stays brand-voice.
+// Brand-voice section heading (founder-approved). The primary search phrase
+// lives in the hero eyebrow, footer descriptor, metadata and solution pages.
 export const AUDIENCE_HEADING = {
   eyebrow: "Who Clinax is for",
-  title: "Clinic management software for physiotherapy and rehabilitation practices.",
-  intro:
-    "Most physiotherapy clinics in India still run on a mix of WhatsApp groups, spreadsheets and paper files. Clinax replaces that patchwork with one clinical operating system: appointments, check-in, session documentation, care plans, follow-ups and branch dashboards, all working from a single patient record. It is built for clinics where coordination between reception, therapists and owners is getting harder.",
+  title: "For clinics where coordination is getting harder.",
 }
 
 export const AUDIENCE_SUPPORT = "Starting with physiotherapy and rehabilitation. Designed to expand across allied health."

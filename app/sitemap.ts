@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next"
 import { SITE_URL } from "@/lib/site"
-import { HOME_LAST_MODIFIED, LEGAL_LAST_MODIFIED } from "@/lib/seo"
+import { HOME_LAST_MODIFIED, LEGAL_LAST_MODIFIED, SOLUTIONS_INDEX_LAST_MODIFIED } from "@/lib/seo"
 import { SOLUTIONS } from "@/components/solutions"
 import { getAllPosts } from "@/lib/blog"
 
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogLatest = posts[0]?.updated ?? HOME_LAST_MODIFIED
   return [
     { url: SITE_URL, lastModified: HOME_LAST_MODIFIED, changeFrequency: "monthly", priority: 1 },
-    { url: `${SITE_URL}/solutions`, lastModified: HOME_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/solutions`, lastModified: SOLUTIONS_INDEX_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.8 },
     ...SOLUTIONS.map((s) => ({
       url: `${SITE_URL}/solutions/${s.slug}`,
       lastModified: s.updated,

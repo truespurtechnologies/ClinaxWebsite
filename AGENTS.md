@@ -31,7 +31,7 @@ for the same form. Keep button labels Title Case, form/heading copy sentence cas
   use Radix `forceMount`, inactive product-tour tab copy is rendered `hidden`, never unmounted.
 - Copy guardrails apply to solution pages and blog posts too: capabilities only from `content.ts`,
   no quantified outcomes, no certification claims, no competitor names or comparisons. The hero H1
-  stays brand-voice; search keywords live in the hero eyebrow, `AUDIENCE_HEADING`, footer descriptor,
+  stays brand-voice; search keywords live in the hero eyebrow, footer descriptor,
   `<title>`/meta and the solution pages.
 - `components/Nav.tsx` is route-aware (`usePathname`): anchors smooth-scroll on `/` and become `/#…`
   links elsewhere; `scrollToId` in `motion.ts` falls back to navigation when the target isn't on the page.

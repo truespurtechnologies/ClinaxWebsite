@@ -34,7 +34,8 @@ export const KEYWORDS = [
 
 // Canonical page registry consumed by app/sitemap.ts. Solution pages and blog
 // posts register themselves via components/solutions.ts and lib/blog.ts.
-export const HOME_LAST_MODIFIED = "2026-10-11"
+export const HOME_LAST_MODIFIED = "2026-10-25"
+export const SOLUTIONS_INDEX_LAST_MODIFIED = "2026-10-11"
 export const LEGAL_LAST_MODIFIED = "2026-09-30"
 
 export const abs = (path: string) => (path.startsWith("http") ? path : `${SITE_URL}${path}`)

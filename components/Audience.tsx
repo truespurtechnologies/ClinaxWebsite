@@ -24,7 +24,7 @@ export default function Audience() {
   return (
     <section id="who-its-for" className="py-16 sm:py-20 scroll-mt-20" style={{ background: C.surface, borderBottom: `1px solid ${C.lavender}` }}>
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <SectionHeading eyebrow={AUDIENCE_HEADING.eyebrow} title={AUDIENCE_HEADING.title} sub={AUDIENCE_HEADING.intro} />
+        <SectionHeading eyebrow={AUDIENCE_HEADING.eyebrow} title={AUDIENCE_HEADING.title} />
 
         <div
           ref={ref}

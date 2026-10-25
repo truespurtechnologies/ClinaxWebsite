@@ -8,7 +8,7 @@ import { Eyebrow } from "@/components/ui"
 import { SOLUTIONS } from "@/components/solutions"
 import { C, HEADING } from "@/components/theme"
 import { SITE_URL } from "@/lib/site"
-import { HOME_LAST_MODIFIED, breadcrumbLd, graph, webPageLd } from "@/lib/seo"
+import { SOLUTIONS_INDEX_LAST_MODIFIED, breadcrumbLd, graph, webPageLd } from "@/lib/seo"
 
 const TITLE = "Solutions — Clinic Software for Physiotherapy, Rehab & Multi-Branch Clinics"
 const DESCRIPTION =
@@ -26,7 +26,7 @@ export default function SolutionsIndex() {
     <>
       <JsonLd
         data={graph(
-          webPageLd({ path: "/solutions", title: TITLE, description: DESCRIPTION, dateModified: HOME_LAST_MODIFIED }),
+          webPageLd({ path: "/solutions", title: TITLE, description: DESCRIPTION, dateModified: SOLUTIONS_INDEX_LAST_MODIFIED }),
           breadcrumbLd([{ name: "Clinax", path: "/" }, { name: "Solutions", path: "/solutions" }])
         )}
       />
