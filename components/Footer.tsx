@@ -29,7 +29,10 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4 flex flex-col gap-4">
-            <ClinaxLogo variant="reversed" height={36} />
+            {/* self-start stops the flex column from stretching the img to full
+                column width (which letterboxed the SVG artwork, making it look
+                centred). mb-2 + gap-4 gives 24px before the description. */}
+            <ClinaxLogo variant="reversed" height={44} className="self-start mb-2" />
             <p className="text-[13px] leading-[1.65] max-w-sm" style={{ color: C.lilac }}>
               Physiotherapy clinic management software — the clinical operating system for physio &amp; rehab clinics in India.
               Reception, therapists and leadership on one patient record.
