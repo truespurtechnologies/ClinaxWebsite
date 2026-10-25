@@ -6,6 +6,7 @@
 // changes — never `new Date()` at build time, which tells crawlers every
 // deploy is fresh content and dilutes the signal.
 
+import type { Metadata } from "next"
 import { CONTACT_EMAIL, SITE_NAME, SITE_URL, TRUESPUR_URL } from "./site"
 
 export const DEFAULT_TITLE = "Clinax — Clinical Operating System for Physiotherapy & Rehab Clinics"
@@ -39,6 +40,49 @@ export const SOLUTIONS_INDEX_LAST_MODIFIED = "2026-10-11"
 export const LEGAL_LAST_MODIFIED = "2026-09-30"
 
 export const abs = (path: string) => (path.startsWith("http") ? path : `${SITE_URL}${path}`)
+
+// ─── Route metadata ────────────────────────────────────────────────────────
+
+// Every route builds its metadata here so each page gets exactly one
+// self-referencing canonical and a complete Open Graph / Twitter set. Next.js
+// replaces (not merges) nested objects like `openGraph`, so partial per-route
+// overrides silently drop the image and site name — always go through this.
+// The root layout holds site-wide defaults only, never a canonical or og:url.
+export function pageMetadata(opts: {
+  /** Document <title>; templated as "%s | Clinax" unless `absoluteTitle`. */
+  title: string
+  description: string
+  path: string
+  absoluteTitle?: boolean
+  /** og:title / twitter:title when it should differ from the document title. */
+  shareTitle?: string
+  /** RSS autodiscovery link — homepage and /blog only. */
+  feed?: boolean
+  article?: { publishedTime: string; modifiedTime: string }
+}): Metadata {
+  const url = abs(opts.path)
+  const shareTitle = opts.shareTitle ?? (opts.absoluteTitle ? opts.title : TITLE_TEMPLATE.replace("%s", opts.title))
+  return {
+    title: opts.absoluteTitle ? { absolute: opts.title } : opts.title,
+    description: opts.description,
+    alternates: {
+      canonical: url,
+      ...(opts.feed ? { types: { "application/rss+xml": abs("/feed.xml") } } : {}),
+    },
+    openGraph: {
+      url,
+      title: shareTitle,
+      description: opts.description,
+      siteName: SITE_NAME,
+      locale: "en_IN",
+      images: [OG_IMAGE],
+      ...(opts.article
+        ? { type: "article", publishedTime: opts.article.publishedTime, modifiedTime: opts.article.modifiedTime, authors: ["TrueSpur"] }
+        : { type: "website" }),
+    },
+    twitter: { card: "summary_large_image", title: shareTitle, description: opts.description, images: [OG_IMAGE.url] },
+  }
+}
 
 // ─── JSON-LD ───────────────────────────────────────────────────────────────
 

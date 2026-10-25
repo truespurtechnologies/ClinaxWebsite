@@ -9,6 +9,8 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://clinax.in"
 export const SITE_NAME = "Clinax"
 
 // Parent company site — Clinax is a TrueSpur product, but lives on its own domain.
+// A build-time constant (no env lookup, so it is never undefined); it is the
+// single source for the author metadata URL and the Organization JSON-LD.
 export const TRUESPUR_URL = "https://truespur.ai"
 
 // Public contact address shown in the footer / CTA. Override at build time

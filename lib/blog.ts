@@ -6,6 +6,8 @@
 export interface Post {
   slug: string
   title: string
+  /** Shorter document <title> only; H1, social titles, RSS and Article headline keep `title`. */
+  seoTitle?: string
   description: string
   published: string
   updated: string
@@ -18,6 +20,7 @@ export const POSTS: Post[] = [
   {
     slug: "physiotherapy-clinic-management-software-what-to-look-for",
     title: "Physiotherapy clinic management software: what to look for in India (2026)",
+    seoTitle: "Choosing physiotherapy clinic management software in India",
     description:
       "A practical checklist for choosing physiotherapy clinic management software in India — session-based records, roles, multi-branch visibility, data ownership and onboarding.",
     published: "2026-10-11",
@@ -28,6 +31,7 @@ export const POSTS: Post[] = [
   {
     slug: "what-is-a-clinical-operating-system",
     title: "What is a clinical operating system — and how is it different from clinic software?",
+    seoTitle: "What is a clinical operating system?",
     description:
       "Clinic software does one job. A clinical operating system connects the whole clinic around one patient record. Here is the difference and why it matters for physiotherapy.",
     published: "2026-10-11",
@@ -48,6 +52,7 @@ export const POSTS: Post[] = [
   {
     slug: "opening-a-second-physiotherapy-branch-operations-checklist",
     title: "Opening a second physiotherapy branch: an operations checklist",
+    seoTitle: "Opening a second physiotherapy branch: operations checklist",
     description:
       "What changes operationally when a physiotherapy clinic opens its second branch — scheduling, records, roles, follow-ups, reporting — and how to prepare before day one.",
     published: "2026-10-11",
@@ -68,6 +73,7 @@ export const POSTS: Post[] = [
   {
     slug: "dpdp-and-patient-data-what-physiotherapy-clinics-should-understand",
     title: "DPDP and patient data: what physiotherapy clinics should understand",
+    seoTitle: "DPDP and patient data for physiotherapy clinics",
     description:
       "A plain-language orientation to India's Digital Personal Data Protection Act for physiotherapy clinic owners — the questions to ask about consent, access, storage and exports.",
     published: "2026-10-11",

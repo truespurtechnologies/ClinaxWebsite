@@ -1,5 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { C, GRADIENT, HEADING } from "@/components/theme"
+
+// No canonical or og:url (the root layout sets none), and robots replaces the
+// layout's index/follow so the 404 never carries conflicting directives.
+export const metadata: Metadata = {
+  title: "Page not found",
+  description: "This page doesn't exist. Head back to the Clinax homepage.",
+  robots: { index: false, follow: true },
+}
 
 export default function NotFound() {
   return (

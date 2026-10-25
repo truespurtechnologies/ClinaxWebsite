@@ -9,9 +9,8 @@ import JsonLd from "@/components/JsonLd"
 import { Eyebrow } from "@/components/ui"
 import { C, HEADING } from "@/components/theme"
 import { getSolution } from "@/components/solutions"
-import { SITE_URL } from "@/lib/site"
 import { POSTS, getAllPosts, getPost } from "@/lib/blog"
-import { OG_IMAGE, articleLd, breadcrumbLd, graph } from "@/lib/seo"
+import { articleLd, breadcrumbLd, graph, pageMetadata } from "@/lib/seo"
 
 export const dynamicParams = false
 
@@ -23,23 +22,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const p = getPost(slug)
   if (!p) return {}
-  const url = `${SITE_URL}/blog/${p.slug}`
-  return {
-    title: p.title,
+  return pageMetadata({
+    title: p.seoTitle ?? p.title,
+    shareTitle: p.title,
     description: p.description,
-    alternates: { canonical: url },
-    openGraph: {
-      type: "article",
-      url,
-      title: p.title,
-      description: p.description,
-      images: [OG_IMAGE],
-      publishedTime: p.published,
-      modifiedTime: p.updated,
-      authors: ["TrueSpur"],
-    },
-    twitter: { card: "summary_large_image", title: p.title, description: p.description, images: [OG_IMAGE.url] },
-  }
+    path: `/blog/${p.slug}`,
+    article: { publishedTime: p.published, modifiedTime: p.updated },
+  })
 }
 
 const fmt = (d: string) => new Date(d).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })

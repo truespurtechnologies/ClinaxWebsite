@@ -50,7 +50,12 @@ assets/raw/         original product screenshots (Physiora-branded) — source a
 
 ## SEO
 
-- Titles use the `%s | Clinax` template from `lib/seo.ts`; every route sets `alternates.canonical`.
+- Every route builds its metadata with `pageMetadata()` from `lib/seo.ts`: one self-referencing
+  canonical, a complete Open Graph/Twitter set, and an RSS autodiscovery link only on `/` and `/blog`.
+  Titles use the `%s | Clinax` template. The root layout holds site-wide defaults only — never a
+  canonical or `og:url` — so a route without `pageMetadata()` gets no canonical rather than the
+  homepage's. Posts may set `seoTitle` to shorten the document `<title>` only; the H1, social titles,
+  RSS and Article headline keep `title`. `app/not-found.tsx` is `noindex, follow` with no canonical.
 - `app/sitemap.ts` reads stable `lastModified` dates from `lib/seo.ts`, `components/solutions.ts`
   (`updated`) and `lib/blog.ts` (`updated`). Bump those dates when copy materially changes —
   never use `new Date()`.

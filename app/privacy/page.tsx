@@ -1,15 +1,13 @@
-import type { Metadata } from "next"
 import LegalPage from "@/components/LegalPage"
 import { PRIVACY } from "@/components/legal"
-import { SITE_URL } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Privacy Policy",
   description:
     "How Clinax, a TrueSpur product, collects, uses and protects information through the Clinax website and demo or early-access requests.",
-  alternates: { canonical: `${SITE_URL}/privacy` },
-  openGraph: { url: `${SITE_URL}/privacy` },
-}
+  path: "/privacy",
+})
 
 export default function PrivacyPage() {
   return <LegalPage doc={PRIVACY} />

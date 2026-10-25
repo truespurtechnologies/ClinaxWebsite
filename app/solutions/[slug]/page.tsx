@@ -2,8 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import SolutionPage from "@/components/SolutionPage"
 import { SOLUTIONS, getSolution } from "@/components/solutions"
-import { SITE_URL } from "@/lib/site"
-import { OG_IMAGE } from "@/lib/seo"
+import { pageMetadata } from "@/lib/seo"
 
 export const dynamicParams = false
 
@@ -15,14 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const s = getSolution(slug)
   if (!s) return {}
-  const url = `${SITE_URL}/solutions/${s.slug}`
-  return {
-    title: s.title,
-    description: s.description,
-    alternates: { canonical: url },
-    openGraph: { type: "website", url, title: s.title, description: s.description, images: [OG_IMAGE] },
-    twitter: { card: "summary_large_image", title: s.title, description: s.description, images: [OG_IMAGE.url] },
-  }
+  return pageMetadata({ title: s.title, shareTitle: s.title, description: s.description, path: `/solutions/${s.slug}` })
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {

@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import Link from "next/link"
 import Nav from "@/components/Nav"
 import Footer from "@/components/Footer"
@@ -6,20 +5,14 @@ import FinalCTA from "@/components/FinalCTA"
 import JsonLd from "@/components/JsonLd"
 import { Eyebrow } from "@/components/ui"
 import { C, HEADING } from "@/components/theme"
-import { SITE_URL } from "@/lib/site"
 import { getAllPosts } from "@/lib/blog"
-import { breadcrumbLd, graph, webPageLd } from "@/lib/seo"
+import { breadcrumbLd, graph, pageMetadata, webPageLd } from "@/lib/seo"
 
 const TITLE = "Blog — Running a Physiotherapy Clinic"
 const DESCRIPTION =
   "Practical writing for physiotherapy and rehabilitation clinic owners in India: operations, documentation, growing to multiple branches and choosing clinic software."
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  alternates: { canonical: `${SITE_URL}/blog`, types: { "application/rss+xml": `${SITE_URL}/feed.xml` } },
-  openGraph: { url: `${SITE_URL}/blog` },
-}
+export const metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/blog", feed: true })
 
 const fmt = (d: string) => new Date(d).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })
 

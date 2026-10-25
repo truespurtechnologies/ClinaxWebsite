@@ -1,15 +1,13 @@
-import type { Metadata } from "next"
 import LegalPage from "@/components/LegalPage"
 import { TERMS } from "@/components/legal"
-import { SITE_URL } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Terms of Service",
   description:
     "Terms governing use of the Clinax website, a clinical operating system for physiotherapy and rehabilitation clinics by TrueSpur.",
-  alternates: { canonical: `${SITE_URL}/terms` },
-  openGraph: { url: `${SITE_URL}/terms` },
-}
+  path: "/terms",
+})
 
 export default function TermsPage() {
   return <LegalPage doc={TERMS} />

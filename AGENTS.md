@@ -24,7 +24,10 @@ for the same form. Keep button labels Title Case, form/heading copy sentence cas
   Tailwind utilities for layout. Do not introduce shadcn/ui or CSS-variable token systems.
 - Site-wide URLs and the public contact email live in `lib/site.ts`; do not hardcode `truespur.ai` or
   email addresses in components.
-- SEO: page titles/descriptions, OG image, sitemap dates and JSON-LD builders live in `lib/seo.ts`;
+- SEO: build every route's metadata with `pageMetadata()` from `lib/seo.ts` (self-referencing canonical,
+  full Open Graph/Twitter, RSS link only on `/` and `/blog`); never put a canonical or `og:url` in the root
+  layout. Post `seoTitle` shortens only the document `<title>`.
+  Page titles/descriptions, OG image, sitemap dates and JSON-LD builders live in `lib/seo.ts`;
   render structured data with `components/JsonLd.tsx` from server components only. Sitemap
   `lastModified` values are hand-maintained dates (`HOME_LAST_MODIFIED`, `Solution.updated`,
   `Post.updated`) — never `new Date()`. Crawlable copy must be in the server-rendered HTML: FAQ answers

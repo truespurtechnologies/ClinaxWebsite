@@ -15,7 +15,9 @@ import Footer from "@/components/Footer"
 import StickyCTA from "@/components/StickyCTA"
 import JsonLd from "@/components/JsonLd"
 import { FAQS } from "@/components/content"
-import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, HOME_LAST_MODIFIED, faqLd, graph, softwareLd, webPageLd } from "@/lib/seo"
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, HOME_LAST_MODIFIED, faqLd, graph, pageMetadata, softwareLd, webPageLd } from "@/lib/seo"
+
+export const metadata = pageMetadata({ title: DEFAULT_TITLE, absoluteTitle: true, description: DEFAULT_DESCRIPTION, path: "/", feed: true })
 
 export default function ClinaxPage() {
   return (

@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import Link from "next/link"
 import Nav from "@/components/Nav"
 import Footer from "@/components/Footer"
@@ -7,19 +6,21 @@ import JsonLd from "@/components/JsonLd"
 import { Eyebrow } from "@/components/ui"
 import { SOLUTIONS } from "@/components/solutions"
 import { C, HEADING } from "@/components/theme"
-import { SITE_URL } from "@/lib/site"
-import { SOLUTIONS_INDEX_LAST_MODIFIED, breadcrumbLd, graph, webPageLd } from "@/lib/seo"
+import { SOLUTIONS_INDEX_LAST_MODIFIED, TITLE_TEMPLATE, breadcrumbLd, graph, pageMetadata, webPageLd } from "@/lib/seo"
 
+// TITLE stays the page's identity (WebPage JSON-LD name, social titles);
+// DOC_TITLE is the shorter search-result <title> only.
 const TITLE = "Solutions — Clinic Software for Physiotherapy, Rehab & Multi-Branch Clinics"
+const DOC_TITLE = "Solutions for Physiotherapy, Rehab & Multi-Branch Clinics"
 const DESCRIPTION =
   "How Clinax fits physiotherapy clinics, rehabilitation centres and multi-branch practices — one clinical operating system for reception, therapists and leadership."
 
-export const metadata: Metadata = {
-  title: { absolute: `${TITLE} | Clinax` },
+export const metadata = pageMetadata({
+  title: DOC_TITLE,
+  shareTitle: TITLE_TEMPLATE.replace("%s", TITLE),
   description: DESCRIPTION,
-  alternates: { canonical: `${SITE_URL}/solutions` },
-  openGraph: { url: `${SITE_URL}/solutions` },
-}
+  path: "/solutions",
+})
 
 export default function SolutionsIndex() {
   return (
